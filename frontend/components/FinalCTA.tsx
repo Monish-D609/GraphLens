@@ -19,7 +19,7 @@ export default function FinalCTA() {
             Graph-Augmented Retrieval over Technical Documentation
           </h2>
           <p className="font-inter text-body-lg text-on-surface-variant mb-8 max-w-2xl leading-relaxed">
-            Built as an engineering internship project. Evaluates dual-stream retrieval combining dense vector similarity with deterministic in-memory multigraph traversal.
+            An open-source architecture intelligence engine evaluating dual-stream retrieval: combining dense vector similarity with deterministic in-memory multigraph traversal.
           </p>
 
           {/* Action Links */}

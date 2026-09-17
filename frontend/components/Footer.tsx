@@ -22,7 +22,7 @@ export default function Footer() {
               </div>
               <span className="font-geist text-headline-sm text-on-surface tracking-tight font-semibold">GraphLens</span>
               <span className="font-mono text-[10px] uppercase tracking-wider px-2 py-0.5 rounded bg-surface-container-high text-tertiary border border-outline-variant/30">
-                Internship Project
+                Open Source
               </span>
             </div>
             <p className="font-inter text-body-sm text-on-surface-variant max-w-md">

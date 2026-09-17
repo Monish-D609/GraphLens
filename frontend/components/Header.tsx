@@ -33,7 +33,7 @@ export default function Header() {
 
             <span className="hidden sm:inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-surface-container-high border border-outline-variant/40 text-on-surface-variant">
               <span className="w-1.5 h-1.5 rounded-full bg-tertiary" />
-              Internship Project
+              Architecture Intelligence
             </span>
 
             {/* Desktop Nav */}
