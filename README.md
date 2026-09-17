@@ -199,6 +199,20 @@ In **vanilla mode**, retrieval returns only the chunks most semantically similar
 
 ---
 
+## 🤖 AI Tools & Development Workflow
+
+The development and engineering of GraphLens was accelerated using specialized AI tools across each project phase:
+
+| Phase | Tool / Model | Key Contributions |
+|---|---|---|
+| **Research & Validation** | **ChatGPT & Claude** | Evaluated Graph RAG vs. Vanilla RAG trade-offs, validated hybrid retrieval techniques, and explored dense vector models |
+| **Architecture & Specifications** | **Claude** | Formulated formal engineering specifications: [SRS.md](SRS.md), [PRD.md](PRD.md), and [WBS.md](WBS.md) |
+| **Frontend Prototyping** | **Stitch** | UI/UX prototyping, visual layout design, and component hierarchy |
+| **Implementation & Engineering** | **Antigravity (Claude + Gemini)** | Full-stack engineering: FastAPI backend, NetworkX graph extraction, ChromaDB integration, Next.js live comparison playground, automated test suite (`pytest`), CI/CD workflows, and deployment readiness |
+
+
+---
+
 ## 🚀 Quick Start
 
 ### 1. Clone and install
