@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><title>GraphLens — Engineering Knowledge Graph</title><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {"darkMode":"class","theme":{"extend":{"colors":{"on-surface":"#dfe2ee","tertiary-fixed-dim":"#2fd9f4","primary-container":"#06b6d4","inverse-on-surface":"#2c3039","secondary-container":"#571bc1","surface-dim":"#0f131c","on-error-container":"#ffdad6","on-tertiary":"#00363e","surface-container-high":"#262a33","on-error":"#690005","on-primary-fixed":"#001f26","surface-container-highest":"#31353e","primary":"#4cd7f6","on-primary-container":"#00424f","on-secondary":"#3c0091","surface-tint":"#4cd7f6","on-background":"#dfe2ee","on-secondary-fixed":"#23005c","surface-container":"#1c2028","secondary":"#d0bcff","secondary-fixed":"#e9ddff","on-secondary-fixed-variant":"#5516be","primary-fixed-dim":"#4cd7f6","surface-variant":"#31353e","background":"#0f131c","error-container":"#93000a","surface-container-low":"#181c24","on-tertiary-container":"#00434d","on-tertiary-fixed":"#001f25","on-secondary-container":"#c4abff","error":"#ffb4ab","outline-variant":"#3d494c","on-surface-variant":"#bcc9cd","on-primary-fixed-variant":"#004e5c","surface":"#0f131c","inverse-surface":"#dfe2ee","surface-container-lowest":"#0a0e16","inverse-primary":"#00687a","outline":"#869397","primary-fixed":"#acedff","on-primary":"#003640","tertiary":"#2fd9f4","secondary-fixed-dim":"#d0bcff","surface-bright":"#353942","tertiary-fixed":"#a2eeff","tertiary-container":"#00b7cf","on-tertiary-fixed-variant":"#004e5a"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"space-xl":"2rem","margin-mobile":"0.75rem","gutter-mobile":"0.5rem","gutter":"1rem","gutter-tablet":"0.75rem","space-sm":"0.5rem","margin":"1.5rem","space-xs":"0.25rem","space-lg":"1.25rem","space-md":"0.75rem","margin-tablet":"1rem"},"fontFamily":{"body-sm":["Inter"],"headline-md":["Geist"],"body-lg":["Inter"],"label-xs":["JetBrains Mono"],"code-md":["JetBrains Mono"],"body-md":["Inter"],"title-md":["Geist"],"headline-sm":["Geist"],"code-sm":["JetBrains Mono"],"display-lg-mobile":["Geist"],"label-md":["JetBrains Mono"],"display-lg":["Geist"],"headline-lg":["Geist"]},"fontSize":{"body-sm":["12px",{"lineHeight":"16px","letterSpacing":"0.01em","fontWeight":"400"}],"headline-md":["22px",{"lineHeight":"28px","letterSpacing":"-0.015em","fontWeight":"600"}],"body-lg":["15px",{"lineHeight":"24px","letterSpacing":"0","fontWeight":"400"}],"label-xs":["10px",{"lineHeight":"12px","letterSpacing":"0.06em","fontWeight":"600"}],"code-md":["13px",{"lineHeight":"20px","letterSpacing":"-0.01em","fontWeight":"400"}],"body-md":["13px",{"lineHeight":"20px","letterSpacing":"0","fontWeight":"400"}],"title-md":["15px",{"lineHeight":"20px","letterSpacing":"-0.005em","fontWeight":"500"}],"headline-sm":["18px",{"lineHeight":"24px","letterSpacing":"-0.01em","fontWeight":"500"}],"code-sm":["11px",{"lineHeight":"16px","letterSpacing":"0","fontWeight":"500"}],"display-lg-mobile":["30px",{"lineHeight":"38px","letterSpacing":"-0.02em","fontWeight":"600"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.02em","fontWeight":"500"}],"display-lg":["40px",{"lineHeight":"48px","letterSpacing":"-0.025em","fontWeight":"600"}],"headline-lg":["28px",{"lineHeight":"36px","letterSpacing":"-0.02em","fontWeight":"600"}]}}}};</script></head><body class="bg-surface text-on-surface font-body-md text-body-md antialiased min-h-screen"><header class="fixed top-0 left-0 right-0 z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30"><div class="h-16 w-full px-margin flex items-center justify-between"><div class="flex items-center gap-space-xl"><a class="flex items-center gap-space-sm group" data-path="product" href="#"><div class="w-8 h-8 rounded-lg bg-surface-container-high border border-outline-variant/50 flex items-center justify-center text-primary group-hover:border-primary/50 transition-colors"><span class="material-symbols-outlined text-[18px]">hub</span></div><span class="font-headline-sm text-headline-sm tracking-tight text-on-surface flex items-center gap-1.5">GraphLens<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span></span></a><nav class="hidden lg:flex items-center gap-space-lg" data-active-classes="text-primary font-medium"><a aria-current="page" class="transition-colors text-primary font-medium" data-path="product" href="#">Product</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="solutions" href="#">Solutions</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="how-it-works" href="#">How it Works</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="architecture" href="#">Architecture</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="pricing" href="#">Pricing</a><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" data-path="docs" href="#">Docs</a></nav></div><div class="flex items-center gap-space-md"><a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors px-space-sm py-1.5" data-path="login" href="#">Sign in</a><a class="inline-flex items-center justify-center px-space-md py-1.5 rounded bg-primary-container text-on-primary-container font-title-md text-title-md hover:bg-primary transition-all shadow-[0_0_16px_rgba(6,182,212,0.35)]" data-path="signup" href="#">Start Free Trial</a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center ml-space-xs"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-16 bg-surface"><div class="flex flex-col w-full text-on-surface overflow-x-hidden">
+<!-- ========================================================================= -->
+<!-- 1. HERO SECTION: Technical Command Center Visual & Plain-English Query    -->
+<!-- ========================================================================= -->
+<section class="relative w-full px-margin pt-12 pb-24 lg:pt-16 lg:pb-32 overflow-hidden">
+<!-- Ambient glowing backdrop radial -->
+<div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-primary/10 rounded-full blur-[140px] pointer-events-none -z-10"></div>
+<div class="absolute top-1/3 right-[-100px] w-[450px] h-[450px] bg-secondary-container/20 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+<div class="max-w-7xl mx-auto flex flex-col items-center text-center">
+<!-- Eyebrow Badge -->
+<div class="inline-flex items-center gap-space-sm px-space-md py-1.5 rounded-full bg-surface-container-high border border-outline-variant/40 shadow-sm mb-6">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+</span>
+<span class="font-label-md text-label-md text-tertiary tracking-wide uppercase">Architecture Intelligence for Engineering Teams</span>
+</div>
+<!-- Headline & Subheadline -->
+<h1 class="font-display-lg text-display-lg max-w-4xl tracking-tight text-on-surface mb-6">
+        Understand your system dependencies instantly.
+      </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mb-10">
+        GraphLens connects your documentation into a live knowledge graph so your team can query architectural relationships in plain English.
+      </p>
+<!-- CTA Actions -->
+<div class="flex flex-wrap items-center justify-center gap-space-md mb-16">
+<a class="inline-flex items-center justify-center px-space-xl py-3 rounded-lg bg-primary-container text-on-primary-container font-title-md text-title-md hover:bg-primary transition-all duration-200 shadow-[0_0_24px_rgba(6,182,212,0.45)] hover:shadow-[0_0_32px_rgba(6,182,212,0.65)] hover:-translate-y-0.5" href="#pricing">
+          Start your free trial
+          <span class="material-symbols-outlined ml-2 text-[20px]">arrow_forward</span>
+</a>
+<button class="inline-flex items-center justify-center px-space-lg py-3 rounded-lg bg-surface-container-high/70 hover:bg-surface-container-high border border-outline-variant/50 font-title-md text-title-md text-on-surface transition-all duration-200 hover:border-primary/40" onclick="document.getElementById('demo-modal').classList.remove('hidden')">
+<span class="material-symbols-outlined text-primary mr-2 text-[20px]">play_circle</span>
+          Watch a 2-minute demo
+        </button>
+</div>
+<!-- Hero Visual Mockup: Multi-pane Workstation Console -->
+<div class="w-full text-left bg-surface-container-lowest/90 border border-outline-variant/40 rounded-xl shadow-2xl backdrop-blur-xl overflow-hidden">
+<!-- Console Window Top Bar -->
+<div class="px-space-lg py-3 bg-surface-container-low border-b border-outline-variant/30 flex flex-wrap items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-3 rounded-full bg-surface-container-highest"></span>
+<span class="w-3 h-3 rounded-full bg-surface-container-highest"></span>
+<span class="w-3 h-3 rounded-full bg-surface-container-highest"></span>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant flex items-center gap-1 ml-2">
+<span class="material-symbols-outlined text-[15px] text-primary">terminal</span>
+              graphlens-core // topological-mesh-v2
+            </span>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 font-code-sm text-code-sm text-on-surface-variant">
+<span class="inline-block w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span>Graph synced 2m ago</span>
+<span class="text-outline-variant">•</span>
+<span class="text-tertiary-fixed-dim">142 services indexed</span>
+</div>
+<span class="font-label-xs text-label-xs bg-surface-container-high px-2 py-0.5 rounded text-on-surface-variant border border-outline-variant/30">L4 INGESTION</span>
+</div>
+</div>
+<!-- Natural Language Interactive Query Command Bar -->
+<div class="p-space-lg bg-surface-container border-b border-outline-variant/30">
+<div class="flex flex-col lg:flex-row items-stretch lg:items-center gap-3">
+<div class="relative flex-1 flex items-center bg-surface-container-lowest rounded-lg border border-outline-variant/60 focus-within:border-primary transition-colors">
+<span class="material-symbols-outlined text-primary ml-3 mr-2 text-[20px]">psychology</span>
+<input class="w-full bg-transparent py-2.5 pr-4 text-on-surface font-code-md text-code-md focus:outline-none select-none cursor-default" id="hero-query-input" readonly="" type="text" value="What services break if we deprecate auth-v1 tokens in Q3?"/>
+<span class="font-label-xs text-label-xs text-on-surface-variant/70 mr-3 px-1.5 py-0.5 rounded bg-surface-container-high">PROMPT</span>
+</div>
+<button class="inline-flex items-center justify-center px-space-lg py-2.5 rounded-lg bg-primary text-on-primary font-title-md text-title-md hover:bg-primary-fixed-dim transition-colors shadow-sm whitespace-nowrap">
+<span class="material-symbols-outlined mr-1.5 text-[18px]">bolt</span>
+              Execute Query
+            </button>
+</div>
+</div>
+<!-- Main Topology Canvas & Inspector Drawer Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 min-h-[480px]">
+<!-- Interactive Node-Link Canvas Visualizer (8 cols) -->
+<div class="lg:col-span-8 p-space-lg relative flex flex-col justify-between bg-surface-container-lowest/60">
+<!-- Subtle Grid Background -->
+<div class="absolute inset-0 bg-[radial-gradient(#3d494c_1px,transparent_1px)] [background-size:20px_20px] opacity-25 pointer-events-none"></div>
+<!-- Canvas Top Status & Telemetry Bar -->
+<div class="relative z-10 flex items-center justify-between pb-3 border-b border-outline-variant/20">
+<div class="flex items-center gap-3">
+<span class="font-label-md text-label-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-primary text-[16px]">device_hub</span>
+                  ACTIVE SUBGRAPH
+                </span>
+<span class="font-code-sm text-code-sm bg-primary/10 text-primary px-2 py-0.5 rounded border border-primary/20">auth-v1-blast-radius</span>
+</div>
+<div class="hidden sm:flex items-center gap-4 font-code-sm text-code-sm text-on-surface-variant">
+<span>Latency: <strong class="text-on-surface font-semibold">14ms</strong></span>
+<span>Protocol: <strong class="text-on-surface font-semibold">gRPC / REST</strong></span>
+<span>Traffic: <strong class="text-tertiary-fixed-dim font-semibold">42k req/s</strong></span>
+</div>
+</div>
+<!-- Visual Node Graph Container -->
+<div class="relative z-10 my-8 w-full min-h-[320px] flex items-center justify-center">
+<!-- SVG Connection Edges -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<lineargradient id="edge-cyan" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#06B6D4" stop-opacity="0.8"></stop>
+<stop offset="100%" stop-color="#4cd7f6" stop-opacity="0.3"></stop>
+</lineargradient>
+<lineargradient id="edge-warn" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#06B6D4" stop-opacity="0.7"></stop>
+<stop offset="100%" stop-color="#ffb4ab" stop-opacity="0.9"></stop>
+</lineargradient>
+</defs>
+<!-- Curves linking Center Auth API (x:50%, y:50%) to nodes -->
+<!-- Path to Billing Gateway (top-left) -->
+<path class="animate-[dash_20s_linear_infinite]" d="M 460 160 C 350 160, 240 100, 180 80" fill="none" stroke="url(#edge-cyan)" stroke-dasharray="4,4" stroke-width="2"></path>
+<!-- Path to User Profile (bottom-left) -->
+<path d="M 460 180 C 350 180, 240 240, 180 260" fill="none" stroke="url(#edge-cyan)" stroke-width="1.5"></path>
+<!-- Path to Notification Engine (top-right) -->
+<path d="M 540 160 C 620 160, 700 90, 760 75" fill="none" stroke="url(#edge-cyan)" stroke-width="1.5"></path>
+<!-- Path to Legacy Mobile Gateway (right-warn) -->
+<path d="M 540 175 C 640 175, 700 175, 760 175" fill="none" stroke="url(#edge-warn)" stroke-width="2.5"></path>
+<!-- Path to Orders DB Proxy (bottom-right) -->
+<path d="M 540 190 C 640 210, 700 260, 760 270" fill="none" stroke="url(#edge-cyan)" stroke-width="1.5"></path>
+</svg>
+<!-- Node Layout Flex/Grid -->
+<div class="w-full flex flex-col md:flex-row items-center justify-between gap-6 px-4">
+<!-- Left Flank Nodes -->
+<div class="flex flex-col gap-8 z-20">
+<!-- Node: Billing Gateway -->
+<div class="group p-3 rounded-lg bg-surface-container border border-outline-variant/50 hover:border-primary/50 transition-all duration-200 shadow-md w-52 cursor-pointer">
+<div class="flex items-center justify-between mb-1.5">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="font-headline-sm text-title-md text-on-surface font-medium">Billing Gateway</span>
+</div>
+<span class="font-label-xs text-label-xs text-on-surface-variant bg-surface-container-high px-1 rounded">Go</span>
+</div>
+<div class="font-code-sm text-code-sm text-tertiary flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">sync_alt</span>
+                      HTTP POST /verify
+                    </div>
+</div>
+<!-- Node: User Profile Service -->
+<div class="p-3 rounded-lg bg-surface-container border border-outline-variant/40 hover:border-primary/40 transition-all duration-200 shadow-md w-52 cursor-pointer">
+<div class="flex items-center justify-between mb-1.5">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="font-title-md text-title-md text-on-surface font-medium">User Profile Svc</span>
+</div>
+<span class="font-label-xs text-label-xs text-on-surface-variant bg-surface-container-high px-1 rounded">Node</span>
+</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">arrow_right_alt</span>
+                      gRPC session.v2
+                    </div>
+</div>
+</div>
+<!-- Central Focal Node: AuthService -->
+<div class="z-20 p-5 rounded-xl bg-surface-container-high border-2 border-primary shadow-[0_0_30px_rgba(6,182,212,0.3)] text-center w-64 transform scale-105">
+<div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/20 text-primary font-label-xs text-label-xs uppercase mb-2">
+<span class="material-symbols-outlined text-[12px]">security</span>
+                    Target Entity
+                  </div>
+<h3 class="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight">Auth API</h3>
+<p class="font-code-sm text-code-sm text-on-surface-variant mt-0.5">service: auth-core:v1.14</p>
+<div class="mt-3 pt-3 border-t border-outline-variant/40 flex items-center justify-around font-label-xs text-label-xs text-tertiary">
+<span>5 INGRESS</span>
+<span>•</span>
+<span>12 EGRESS</span>
+</div>
+</div>
+<!-- Right Flank Nodes -->
+<div class="flex flex-col gap-5 z-20">
+<!-- Node: Notification Engine -->
+<div class="p-3 rounded-lg bg-surface-container border border-outline-variant/40 hover:border-primary/40 transition-all duration-200 shadow-md w-56 cursor-pointer">
+<div class="flex items-center justify-between mb-1">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="font-title-md text-title-md text-on-surface font-medium">Notification Engine</span>
+</div>
+<span class="font-label-xs text-label-xs text-on-surface-variant bg-surface-container-high px-1 rounded">Rust</span>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant">PubSub consumer</span>
+</div>
+<!-- Node: Legacy Mobile Gateway (Deprecation Risk Warning) -->
+<div class="p-3 rounded-lg bg-error-container/20 border border-error/50 shadow-[0_0_15px_rgba(255,180,171,0.2)] w-56 cursor-pointer relative overflow-hidden">
+<div class="absolute top-0 right-0 bg-error text-on-error font-label-xs text-label-xs px-1.5 py-0.5 uppercase tracking-wider font-bold">
+                      Deprecation Risk
+                    </div>
+<div class="flex items-center gap-1.5 mb-1 mt-1">
+<span class="w-2 h-2 rounded-full bg-error animate-pulse"></span>
+<span class="font-title-md text-title-md text-on-surface font-semibold">Legacy Mobile GW</span>
+</div>
+<p class="font-body-sm text-body-sm text-error font-medium">Direct Token Deprecation Risk</p>
+<span class="font-code-sm text-code-sm text-on-surface-variant block mt-1">Bearer hardcoded / v1</span>
+</div>
+<!-- Node: Orders DB Proxy -->
+<div class="p-3 rounded-lg bg-surface-container border border-outline-variant/40 hover:border-primary/40 transition-all duration-200 shadow-md w-56 cursor-pointer">
+<div class="flex items-center justify-between mb-1">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="font-title-md text-title-md text-on-surface font-medium">Orders DB Proxy</span>
+</div>
+<span class="font-label-xs text-label-xs text-on-surface-variant bg-surface-container-high px-1 rounded">Go</span>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant">Read replica shard #3</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Canvas Bottom Command Status -->
+<div class="relative z-10 pt-3 border-t border-outline-variant/20 flex items-center justify-between font-code-sm text-code-sm text-on-surface-variant">
+<span>Selected node: <span class="text-primary">Auth API</span> (0.012s traversal time)</span>
+<span class="hidden sm:inline-block">Click nodes for AST citation analysis</span>
+</div>
+</div>
+<!-- Side Inspection Drawer: Source Documentation Citations (4 cols) -->
+<div class="lg:col-span-4 bg-surface-container-low border-t lg:border-t-0 lg:border-l border-outline-variant/30 p-space-lg flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant/20 mb-4">
+<h4 class="font-title-md text-title-md text-on-surface font-semibold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">menu_book</span>
+                  Verified Documentation Citations
+                </h4>
+<span class="font-label-xs text-label-xs text-primary bg-primary/10 px-2 py-0.5 rounded border border-primary/20">2 SOURCES</span>
+</div>
+<!-- Source Snippet 1 -->
+<div class="mb-4 bg-surface-container rounded-lg p-3 border border-outline-variant/30">
+<div class="flex items-center justify-between mb-2">
+<span class="font-code-sm text-code-sm text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">article</span>
+                    docs/auth/jwt-migration.md:42
+                  </span>
+<span class="font-label-xs text-label-xs text-on-surface-variant">Confluence sync</span>
+</div>
+<div class="p-2 rounded bg-surface-container-lowest font-code-sm text-code-sm text-on-surface-variant leading-relaxed overflow-x-auto border border-outline-variant/20">
+<code>
+<span class="text-tertiary"># Auth Deprecation Roadmap</span><br/>
+                    - Phase 2: Deprecate <span class="text-error">auth-v1 legacy tokens</span> by End-of-Q3.<br/>
+                    - <span class="text-primary">Legacy Mobile Gateway</span> still invokes `/token/v1/introspect`.
+                  </code>
+</div>
+</div>
+<!-- Source Snippet 2 -->
+<div class="mb-4 bg-surface-container rounded-lg p-3 border border-outline-variant/30">
+<div class="flex items-center justify-between mb-2">
+<span class="font-code-sm text-code-sm text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">code</span>
+                    services/billing/client.go:88
+                  </span>
+<span class="font-label-xs text-label-xs text-on-surface-variant">GitHub PR #1480</span>
+</div>
+<div class="p-2 rounded bg-surface-container-lowest font-code-sm text-code-sm text-on-surface-variant leading-relaxed overflow-x-auto border border-outline-variant/20">
+<code>
+<span class="text-outline">87</span> func (c *BillingClient) VerifyToken(ctx) {<br/>
+<span class="text-outline">88</span>   req := c.authClient.NewRequest(<span class="text-tertiary">"POST"</span>, <span class="text-primary-fixed">"/verify"</span>)<br/>
+<span class="text-outline">89</span>   <span class="text-outline-variant">// uses fallback v1 handler</span><br/>
+<span class="text-outline">90</span> }
+                  </code>
+</div>
+</div>
+<!-- Plain English AI Synthesis Summary -->
+<div class="p-3 rounded-lg bg-surface-container-high/60 border border-outline-variant/30">
+<div class="flex items-center gap-1.5 text-tertiary font-title-md text-body-sm font-semibold mb-1">
+<span class="material-symbols-outlined text-[16px]">summarize</span>
+                  Synthesis Summary
+                </div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-normal">
+                  Deprecating <strong class="text-on-surface font-medium">auth-v1</strong> directly disrupts <strong class="text-error font-medium">Legacy Mobile Gateway</strong> which relies on introspect endpoint (no v2 token exchange implemented). Billing Gateway has a fallback but requires header update.
+                </p>
+</div>
+</div>
+<div class="pt-4 mt-4 border-t border-outline-variant/20 flex items-center justify-between font-label-xs text-label-xs text-on-surface-variant">
+<span>Grounding certainty: 99.8%</span>
+<a class="text-primary hover:underline flex items-center gap-1" href="#features">
+                Inspect graph lineage <span class="material-symbols-outlined text-[12px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- 2. PROBLEM SECTION: The Cost of Architectural Blindness                    -->
+<!-- ========================================================================= -->
+<section class="w-full px-margin py-20 bg-surface-container-lowest border-y border-outline-variant/20">
+<div class="max-w-7xl mx-auto">
+<!-- Section Header -->
+<div class="max-w-3xl mb-16">
+<div class="inline-flex items-center gap-2 font-label-xs text-label-xs uppercase tracking-wider text-error mb-3">
+<span class="material-symbols-outlined text-[15px]">report_problem</span>
+          The Cost of Architectural Blindness
+        </div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight mb-4">
+          Microservices evolve faster than documentation.
+        </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+          Engineering managers and staff engineers lose hours tracing service connections across stale wikis and Slack threads.
+        </p>
+</div>
+<!-- Contrast Stats Banner -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+<div class="p-space-xl rounded-xl bg-surface-container-low border border-outline-variant/40 flex flex-col justify-between">
+<div>
+<span class="font-label-xs text-label-xs uppercase tracking-wider text-error font-semibold flex items-center gap-1 mb-2">
+<span class="material-symbols-outlined text-[14px]">history</span>
+              Status Quo: Manual Tracing
+            </span>
+<div class="font-display-lg text-display-lg text-on-surface font-semibold my-2">3.5 hrs</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+              Average time spent by a senior engineer to trace a single cross-service request path through out-of-date Confluence pages and scattered Slack threads.
+            </p>
+</div>
+<div class="mt-6 flex items-center gap-2 font-code-sm text-code-sm text-outline">
+<span class="material-symbols-outlined text-[16px]">close</span>
+            Context switching, outdated confluence, broken staging tests
+          </div>
+</div>
+<div class="p-space-xl rounded-xl bg-surface-container-high border border-primary/40 shadow-[0_0_30px_rgba(6,182,212,0.15)] flex flex-col justify-between relative overflow-hidden">
+<div class="absolute -right-12 -bottom-12 w-48 h-48 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+<div>
+<span class="font-label-xs text-label-xs uppercase tracking-wider text-primary font-semibold flex items-center gap-1 mb-2">
+<span class="material-symbols-outlined text-[14px]">bolt</span>
+              With GraphLens
+            </span>
+<div class="font-display-lg text-display-lg text-primary font-semibold my-2">&lt; 15 seconds</div>
+<p class="font-body-md text-body-md text-on-surface">
+              Ask a plain-English query and receive deterministic, source-linked dependency lineage mapped directly from your latest ASTs and repos.
+            </p>
+</div>
+<div class="mt-6 flex items-center gap-2 font-code-sm text-code-sm text-tertiary-fixed-dim">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+            Instant blast radius analysis, line-level code citations, zero manual tagging
+          </div>
+</div>
+</div>
+<!-- 3 Distinct High-Impact Quote Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-lg">
+<!-- Quote 1 -->
+<div class="p-space-lg rounded-xl bg-surface-container border border-outline-variant/30 flex flex-col justify-between hover:border-outline-variant/70 transition-colors">
+<div>
+<span class="material-symbols-outlined text-outline-variant text-[28px] mb-3">format_quote</span>
+<p class="font-title-md text-title-md text-on-surface italic leading-relaxed mb-6">
+              "We spend more time digging through Confluence than actually building features."
+            </p>
+</div>
+<div class="pt-4 border-t border-outline-variant/20 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center font-title-md text-primary font-bold">
+              ED
+            </div>
+<div>
+<div class="font-title-md text-title-md text-on-surface font-medium">Engineering Director</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Tier-1 Fintech Platform</div>
+</div>
+</div>
+</div>
+<!-- Quote 2 -->
+<div class="p-space-lg rounded-xl bg-surface-container border border-outline-variant/30 flex flex-col justify-between hover:border-outline-variant/70 transition-colors">
+<div>
+<span class="material-symbols-outlined text-outline-variant text-[28px] mb-3">format_quote</span>
+<p class="font-title-md text-title-md text-on-surface italic leading-relaxed mb-6">
+              "I am terrified of changing a core API because I don't know who is actually consuming it."
+            </p>
+</div>
+<div class="pt-4 border-t border-outline-variant/20 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center font-title-md text-tertiary font-bold">
+              PE
+            </div>
+<div>
+<div class="font-title-md text-title-md text-on-surface font-medium">Principal Platform Engineer</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Distributed SaaS Unicorn</div>
+</div>
+</div>
+</div>
+<!-- Quote 3 -->
+<div class="p-space-lg rounded-xl bg-surface-container border border-outline-variant/30 flex flex-col justify-between hover:border-outline-variant/70 transition-colors">
+<div>
+<span class="material-symbols-outlined text-outline-variant text-[28px] mb-3">format_quote</span>
+<p class="font-title-md text-title-md text-on-surface italic leading-relaxed mb-6">
+              "Onboarding new seniors takes months because our architectural knowledge is trapped in a few people's heads."
+            </p>
+</div>
+<div class="pt-4 border-t border-outline-variant/20 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center font-title-md text-secondary font-bold">
+              SI
+            </div>
+<div>
+<div class="font-title-md text-title-md text-on-surface font-medium">Staff Infrastructure Lead</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Cloud Infrastructure Provider</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- 3. HOW IT WORKS: 3 Simple Steps                                           -->
+<!-- ========================================================================= -->
+<section class="w-full px-margin py-24 bg-surface">
+<div class="max-w-7xl mx-auto">
+<!-- Header -->
+<div class="text-center max-w-3xl mx-auto mb-20">
+<span class="font-label-xs text-label-xs uppercase tracking-widest text-primary font-semibold">How It Works</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight mt-2 mb-4">
+          From scattered docs to an executable graph
+        </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+          Turn passive documentation and code repositories into a queryable semantic knowledge network in three simple steps.
+        </p>
+</div>
+<!-- Step Cards Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-space-xl relative">
+<!-- Step 1 -->
+<div class="p-space-xl rounded-xl bg-surface-container-low border border-outline-variant/40 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-6">
+<span class="font-code-md text-code-md text-primary bg-primary/10 px-2.5 py-1 rounded border border-primary/20 font-semibold">01</span>
+<span class="material-symbols-outlined text-outline text-[24px]">cable</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-2">Connect your tools.</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 leading-relaxed">
+              Link your GitHub repositories, Confluence spaces, and internal wikis in minutes.
+            </p>
+</div>
+<!-- Step 1 Visual: Tool Badges -->
+<div class="p-4 rounded-lg bg-surface-container border border-outline-variant/20">
+<div class="font-label-xs text-label-xs text-on-surface-variant mb-3 uppercase tracking-wider">Zero-Config Connectors</div>
+<div class="grid grid-cols-3 gap-2">
+<div class="px-2.5 py-2 rounded bg-surface-container-high border border-outline-variant/40 text-center font-code-sm text-code-sm text-on-surface">GitHub</div>
+<div class="px-2.5 py-2 rounded bg-surface-container-high border border-outline-variant/40 text-center font-code-sm text-code-sm text-on-surface">Confluence</div>
+<div class="px-2.5 py-2 rounded bg-surface-container-high border border-outline-variant/40 text-center font-code-sm text-code-sm text-on-surface">Notion</div>
+<div class="px-2.5 py-2 rounded bg-surface-container-high border border-outline-variant/40 text-center font-code-sm text-code-sm text-on-surface">OpenAPI</div>
+<div class="px-2.5 py-2 rounded bg-surface-container-high border border-outline-variant/40 text-center font-code-sm text-code-sm text-on-surface">Slack</div>
+<div class="px-2.5 py-2 rounded bg-surface-container-high border border-outline-variant/40 text-center font-code-sm text-code-sm text-on-surface">GitLab</div>
+</div>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="p-space-xl rounded-xl bg-surface-container-low border border-outline-variant/40 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-6">
+<span class="font-code-md text-code-md text-primary bg-primary/10 px-2.5 py-1 rounded border border-primary/20 font-semibold">02</span>
+<span class="material-symbols-outlined text-outline text-[24px]">hub</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-2">Build the graph.</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 leading-relaxed">
+              Our AI scans your documentation to map how services, APIs, and databases relate to one another.
+            </p>
+</div>
+<!-- Step 2 Visual: Parsing Pipeline -->
+<div class="p-4 rounded-lg bg-surface-container border border-outline-variant/20 font-code-sm text-code-sm space-y-2">
+<div class="flex items-center justify-between text-on-surface-variant">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px] text-primary">data_object</span>
+                AST Syntax Extractor
+              </span>
+<span class="text-tertiary">Parsed</span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
+<div class="bg-primary h-full w-full"></div>
+</div>
+<div class="flex items-center justify-between text-on-surface-variant pt-2">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px] text-secondary">share</span>
+                Vector Semantic Linking
+              </span>
+<span class="text-secondary">4,812 Nodes</span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
+<div class="bg-secondary h-full w-4/5"></div>
+</div>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="p-space-xl rounded-xl bg-surface-container-low border border-outline-variant/40 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-6">
+<span class="font-code-md text-code-md text-primary bg-primary/10 px-2.5 py-1 rounded border border-primary/20 font-semibold">03</span>
+<span class="material-symbols-outlined text-outline text-[24px]">chat_bubble_outline</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-2">Query in English.</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 leading-relaxed">
+              Ask questions like "What services depend on our Auth API?" and get an answer grounded in your specific architecture.
+            </p>
+</div>
+<!-- Step 3 Visual: Result Card -->
+<div class="p-3 rounded-lg bg-surface-container border border-outline-variant/20">
+<div class="flex items-center gap-2 mb-2">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-code-sm text-code-sm text-on-surface font-medium">"What services depend on our Auth API?"</span>
+</div>
+<div class="p-2 rounded bg-surface-container-lowest border border-outline-variant/30 text-body-sm font-body-sm text-on-surface-variant">
+<p class="text-on-surface font-medium mb-1">Found 4 downstream services:</p>
+<ul class="space-y-0.5 font-code-sm text-code-sm text-tertiary">
+<li>→ Billing Gateway (critical / REST)</li>
+<li>→ User Profile Service (direct gRPC)</li>
+<li>→ Legacy Mobile Gateway (warn)</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- 4. FEATURES: Core Capabilities                                            -->
+<!-- ========================================================================= -->
+<section class="w-full px-margin py-24 bg-surface-container-lowest border-t border-outline-variant/20" id="features">
+<div class="max-w-7xl mx-auto">
+<!-- Section Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+<div>
+<span class="font-label-xs text-label-xs uppercase tracking-widest text-primary font-semibold">Core Capabilities</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight mt-2">
+            Engineered for high-concurrency architectures
+          </h2>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md">
+          Built for teams navigating distributed systems where manual documentation becomes legacy the second it is merged.
+        </p>
+</div>
+<!-- 4 Key Feature Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
+<!-- Feature 1: Dependency Mapping -->
+<div class="p-space-xl rounded-xl bg-surface-container-low border border-outline-variant/40 hover:border-primary/40 transition-all duration-200">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high border border-outline-variant/50 flex items-center justify-center text-primary mb-6">
+<span class="material-symbols-outlined text-[24px]">account_tree</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-3">Dependency Mapping</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 leading-relaxed">
+            Automatically identify which services rely on specific APIs or databases without manual tagging.
+          </p>
+<!-- Micro-UI: Edge Discovery Pill -->
+<div class="p-3 rounded-lg bg-surface-container border border-outline-variant/30 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-tertiary">polyline</span>
+<span class="font-code-sm text-code-sm text-on-surface">Auto-Discovered: BillingGateway → AuthEngine</span>
+</div>
+<span class="font-label-xs text-label-xs bg-primary/15 text-primary px-2 py-0.5 rounded border border-primary/30">Zero-Config</span>
+</div>
+</div>
+<!-- Feature 2: Source-Linked Answers -->
+<div class="p-space-xl rounded-xl bg-surface-container-low border border-outline-variant/40 hover:border-primary/40 transition-all duration-200">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high border border-outline-variant/50 flex items-center justify-center text-primary mb-6">
+<span class="material-symbols-outlined text-[24px]">link</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-3">Source-Linked Answers</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 leading-relaxed">
+            Every response includes direct links to the specific lines of documentation used to generate the answer.
+          </p>
+<!-- Micro-UI: Code line citation preview -->
+<div class="p-3 rounded-lg bg-surface-container border border-outline-variant/30 flex items-center justify-between">
+<div class="flex items-center gap-2 overflow-hidden">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">description</span>
+<span class="font-code-sm text-code-sm text-tertiary truncate">Citation: internal/auth/auth_handler.go:142</span>
+</div>
+<a class="font-label-xs text-label-xs text-primary hover:underline whitespace-nowrap ml-2" href="#">Jump to Code</a>
+</div>
+</div>
+<!-- Feature 3: Change Impact Analysis -->
+<div class="p-space-xl rounded-xl bg-surface-container-low border border-outline-variant/40 hover:border-primary/40 transition-all duration-200">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high border border-outline-variant/50 flex items-center justify-center text-primary mb-6">
+<span class="material-symbols-outlined text-[24px]">crisis_alert</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-3">Change Impact Analysis</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 leading-relaxed">
+            Type in a planned change to see a list of downstream systems that might be affected before you deploy.
+          </p>
+<!-- Micro-UI: Impact severity badge -->
+<div class="p-3 rounded-lg bg-surface-container border border-outline-variant/30 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-error">warning</span>
+<span class="font-code-sm text-code-sm text-on-surface">Deprecate /api/v1/sessions</span>
+</div>
+<span class="font-label-xs text-label-xs bg-error-container text-on-error-container px-2.5 py-1 rounded font-semibold">
+              High Risk / 4 Downstream Services
+            </span>
+</div>
+</div>
+<!-- Feature 4: Automated Indexing -->
+<div class="p-space-xl rounded-xl bg-surface-container-low border border-outline-variant/40 hover:border-primary/40 transition-all duration-200">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high border border-outline-variant/50 flex items-center justify-center text-primary mb-6">
+<span class="material-symbols-outlined text-[24px]">autorenew</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold mb-3">Automated Indexing</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 leading-relaxed">
+            The knowledge graph updates whenever you merge a PR or edit a wiki page, keeping your insights current.
+          </p>
+<!-- Micro-UI: Webhook status indicator -->
+<div class="p-3 rounded-lg bg-surface-container border border-outline-variant/30 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="inline-block w-2 h-2 rounded-full bg-primary animate-ping"></span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">PR #1042 merged · main</span>
+</div>
+<span class="font-code-sm text-code-sm text-primary font-medium">Graph re-indexed in 4.2s</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- 5. SOCIAL PROOF: Customer Testimonials & Metrics                           -->
+<!-- ========================================================================= -->
+<section class="w-full px-margin py-24 bg-surface border-t border-outline-variant/20">
+<div class="max-w-7xl mx-auto">
+<!-- Metrics Strip -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 pb-20 border-b border-outline-variant/20">
+<div class="text-center">
+<div class="font-display-lg text-display-lg font-bold text-primary mb-2">99.4%</div>
+<div class="font-title-md text-title-md text-on-surface font-medium">Dependency Accuracy</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Grounded via AST and runtime endpoint tracing</p>
+</div>
+<div class="text-center">
+<div class="font-display-lg text-display-lg font-bold text-tertiary mb-2">10x Faster</div>
+<div class="font-title-md text-title-md text-on-surface font-medium">Architectural Audits</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Accelerated RFC reviews and migration approvals</p>
+</div>
+<div class="text-center">
+<div class="font-display-lg text-display-lg font-bold text-secondary mb-2">0</div>
+<div class="font-title-md text-title-md text-on-surface font-medium">Blind Deployments</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Pre-deploy blast-radius calculation for every PR</p>
+</div>
+</div>
+<!-- Testimonial Cards -->
+<div class="pt-20">
+<div class="text-center max-w-2xl mx-auto mb-16">
+<span class="font-label-xs text-label-xs uppercase tracking-widest text-primary font-semibold">Social Proof</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight mt-2">
+            Trusted by teams running mission-critical software
+          </h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-lg">
+<!-- Card 1 -->
+<div class="p-space-xl rounded-xl bg-surface-container-low border border-outline-variant/40 flex flex-col justify-between">
+<p class="font-body-lg text-body-lg text-on-surface leading-relaxed mb-8">
+              "This tool saved us from a major production outage by flagging a hidden dependency we missed in our manual docs."
+            </p>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high border border-outline-variant/40 flex items-center justify-center font-code-sm text-primary font-bold">
+                MC
+              </div>
+<div>
+<h4 class="font-title-md text-title-md text-on-surface font-semibold">Marcus Chen</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Engineering Manager at CloudScale</p>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="p-space-xl rounded-xl bg-surface-container-low border border-outline-variant/40 flex flex-col justify-between">
+<p class="font-body-lg text-body-lg text-on-surface leading-relaxed mb-8">
+              "Onboarding new staff engineers is twice as fast now that they can self-serve architectural questions."
+            </p>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high border border-outline-variant/40 flex items-center justify-center font-code-sm text-secondary font-bold">
+                ER
+              </div>
+<div>
+<h4 class="font-title-md text-title-md text-on-surface font-semibold">Elena Rostova</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Staff Software Engineer at FinFlow</p>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="p-space-xl rounded-xl bg-surface-container-low border border-outline-variant/40 flex flex-col justify-between">
+<p class="font-body-lg text-body-lg text-on-surface leading-relaxed mb-8">
+              "It is the first documentation tool that actually stays as current as our codebase."
+            </p>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high border border-outline-variant/40 flex items-center justify-center font-code-sm text-tertiary font-bold">
+                DK
+              </div>
+<div>
+<h4 class="font-title-md text-title-md text-on-surface font-semibold">David Kross</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">VP of Engineering at HyperQuery</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- 6. PRICING SECTION: Transparent Plans for Engineering Scale                -->
+<!-- ========================================================================= -->
+<section class="w-full px-margin py-24 bg-surface-container-lowest border-t border-outline-variant/20" id="pricing">
+<div class="max-w-6xl mx-auto">
+<!-- Section Header -->
+<div class="text-center max-w-2xl mx-auto mb-16">
+<span class="font-label-xs text-label-xs uppercase tracking-widest text-primary font-semibold">Pricing</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight mt-2 mb-3">
+          Predictable pricing for engineering velocity
+        </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+          Start free with your core team, upgrade as your service mesh scales.
+        </p>
+</div>
+<!-- Pricing Plans (Team & Enterprise) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+<!-- Team Plan -->
+<div class="p-space-xl rounded-xl bg-surface-container-low border border-outline-variant/40 hover:border-primary/40 transition-all flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-4">
+<span class="font-title-md text-title-md text-on-surface font-semibold">Team Plan</span>
+<span class="font-label-xs text-label-xs px-2.5 py-0.5 rounded bg-surface-container-high text-primary border border-outline-variant/30">FOR FAST-MOVING SQUADS</span>
+</div>
+<div class="flex items-baseline gap-2 mb-2">
+<span class="font-display-lg text-display-lg text-on-surface font-bold">$30</span>
+<span class="font-body-md text-body-md text-on-surface-variant">/ developer / month</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-8">Billed monthly or annually. Cancel anytime.</p>
+<div class="space-y-3 pt-6 border-t border-outline-variant/20 font-body-md text-body-md text-on-surface">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px]">check</span>
+                GitHub and Confluence connectors
+              </div>
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px]">check</span>
+                Unlimited natural language queries
+              </div>
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px]">check</span>
+                Automated daily indexing &amp; webhook updates
+              </div>
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px]">check</span>
+                Up to 50 microservices indexed
+              </div>
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px]">check</span>
+                Standard email &amp; community support
+              </div>
+</div>
+</div>
+<div class="pt-8 mt-8 border-t border-outline-variant/20">
+<a class="w-full inline-flex items-center justify-center py-3 rounded-lg bg-primary-container text-on-primary-container font-title-md text-title-md hover:bg-primary transition-all shadow-[0_0_16px_rgba(6,182,212,0.3)]" href="#cta">
+              Start 14-day free trial
+            </a>
+</div>
+</div>
+<!-- Enterprise Plan -->
+<div class="p-space-xl rounded-xl bg-surface-container border-2 border-primary/60 shadow-[0_0_30px_rgba(6,182,212,0.2)] flex flex-col justify-between relative">
+<div class="absolute -top-3 right-6 bg-primary text-on-primary font-label-xs text-label-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
+            Most Popular for Scale
+          </div>
+<div>
+<div class="flex items-center justify-between mb-4">
+<span class="font-title-md text-title-md text-on-surface font-semibold">Enterprise Plan</span>
+<span class="font-label-xs text-label-xs px-2.5 py-0.5 rounded bg-primary/20 text-primary border border-primary/40">100+ ENGINEERS</span>
+</div>
+<div class="flex items-baseline gap-2 mb-2">
+<span class="font-display-lg text-display-lg text-on-surface font-bold">Custom pricing</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-8">Tailored for 100+ engineer organizations.</p>
+<div class="space-y-3 pt-6 border-t border-outline-variant/20 font-body-md text-body-md text-on-surface">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px]">verified_user</span>
+                SOC2 Type II compliance &amp; audit reports
+              </div>
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px]">cloud</span>
+                Private cloud / VPC isolated deployment
+              </div>
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px]">support_agent</span>
+                Dedicated account management &amp; custom SLA
+              </div>
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px]">extension</span>
+                Custom connectors (Notion, GitLab, custom wikis)
+              </div>
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px]">all_inclusive</span>
+                Unlimited services, repos, and history
+              </div>
+</div>
+</div>
+<div class="pt-8 mt-8 border-t border-outline-variant/20">
+<button class="w-full inline-flex items-center justify-center py-3 rounded-lg bg-surface-container-high text-on-surface font-title-md text-title-md hover:bg-surface-bright border border-outline-variant/60 transition-all" onclick="document.getElementById('demo-modal').classList.remove('hidden')">
+              Contact sales &amp; security
+            </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- 7. FREQUENTLY ASKED QUESTIONS (FAQ)                                       -->
+<!-- ========================================================================= -->
+<section class="w-full px-margin py-24 bg-surface border-t border-outline-variant/20">
+<div class="max-w-4xl mx-auto">
+<div class="text-center mb-16">
+<span class="font-label-xs text-label-xs uppercase tracking-widest text-primary font-semibold">Answers</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight mt-2">
+          Frequently Asked Questions
+        </h2>
+</div>
+<div class="space-y-4">
+<!-- FAQ 1 -->
+<div class="rounded-xl bg-surface-container-low border border-outline-variant/30 overflow-hidden">
+<button class="w-full px-space-lg py-4 flex items-center justify-between text-left focus:outline-none" onclick="const p = this.nextElementSibling; const icon = this.querySelector('.faq-icon'); p.classList.toggle('hidden'); icon.classList.toggle('rotate-180');">
+<span class="font-title-md text-title-md text-on-surface font-medium">How is this different from basic search?</span>
+<span class="material-symbols-outlined faq-icon text-on-surface-variant text-[20px] transition-transform duration-200">expand_more</span>
+</button>
+<div class="px-space-lg pb-4 pt-1 text-on-surface-variant font-body-md text-body-md border-t border-outline-variant/10">
+            Traditional search finds keywords, but GraphLens understands relationships, like which service calls another.
+          </div>
+</div>
+<!-- FAQ 2 -->
+<div class="rounded-xl bg-surface-container-low border border-outline-variant/30 overflow-hidden">
+<button class="w-full px-space-lg py-4 flex items-center justify-between text-left focus:outline-none" onclick="const p = this.nextElementSibling; const icon = this.querySelector('.faq-icon'); p.classList.toggle('hidden'); icon.classList.toggle('rotate-180');">
+<span class="font-title-md text-title-md text-on-surface font-medium">Does this require us to rewrite our docs?</span>
+<span class="material-symbols-outlined faq-icon text-on-surface-variant text-[20px] transition-transform duration-200">expand_more</span>
+</button>
+<div class="px-space-lg pb-4 pt-1 text-on-surface-variant font-body-md text-body-md border-t border-outline-variant/10">
+            No, it works with your existing documentation and code comments as they are today.
+          </div>
+</div>
+<!-- FAQ 3 -->
+<div class="rounded-xl bg-surface-container-low border border-outline-variant/30 overflow-hidden">
+<button class="w-full px-space-lg py-4 flex items-center justify-between text-left focus:outline-none" onclick="const p = this.nextElementSibling; const icon = this.querySelector('.faq-icon'); p.classList.toggle('hidden'); icon.classList.toggle('rotate-180');">
+<span class="font-title-md text-title-md text-on-surface font-medium">Where is our data stored?</span>
+<span class="material-symbols-outlined faq-icon text-on-surface-variant text-[20px] transition-transform duration-200">expand_more</span>
+</button>
+<div class="px-space-lg pb-4 pt-1 text-on-surface-variant font-body-md text-body-md border-t border-outline-variant/10">
+            We offer flexible deployment options, including private cloud, to ensure your proprietary architecture remains secure.
+          </div>
+</div>
+<!-- FAQ 4 -->
+<div class="rounded-xl bg-surface-container-low border border-outline-variant/30 overflow-hidden">
+<button class="w-full px-space-lg py-4 flex items-center justify-between text-left focus:outline-none" onclick="const p = this.nextElementSibling; const icon = this.querySelector('.faq-icon'); p.classList.toggle('hidden'); icon.classList.toggle('rotate-180');">
+<span class="font-title-md text-title-md text-on-surface font-medium">How long does indexing take?</span>
+<span class="material-symbols-outlined faq-icon text-on-surface-variant text-[20px] transition-transform duration-200">expand_more</span>
+</button>
+<div class="px-space-lg pb-4 pt-1 text-on-surface-variant font-body-md text-body-md border-t border-outline-variant/10">
+            Most teams have a functional knowledge graph within an hour of connecting their primary documentation sources.
+          </div>
+</div>
+<!-- FAQ 5 -->
+<div class="rounded-xl bg-surface-container-low border border-outline-variant/30 overflow-hidden">
+<button class="w-full px-space-lg py-4 flex items-center justify-between text-left focus:outline-none" onclick="const p = this.nextElementSibling; const icon = this.querySelector('.faq-icon'); p.classList.toggle('hidden'); icon.classList.toggle('rotate-180');">
+<span class="font-title-md text-title-md text-on-surface font-medium">Can it handle microservices?</span>
+<span class="material-symbols-outlined faq-icon text-on-surface-variant text-[20px] transition-transform duration-200">expand_more</span>
+</button>
+<div class="px-space-lg pb-4 pt-1 text-on-surface-variant font-body-md text-body-md border-t border-outline-variant/10">
+            Yes, it is specifically designed to bridge the gaps between fragmented service documentation in microservice environments.
+          </div>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- 8. FINAL CALL TO ACTION: Interactive High-Intent Sign-off                 -->
+<!-- ========================================================================= -->
+<section class="w-full px-margin py-20 bg-surface-container-lowest" id="cta">
+<div class="max-w-5xl mx-auto rounded-2xl bg-surface-container border border-outline-variant/40 p-space-xl lg:p-16 relative overflow-hidden shadow-2xl">
+<!-- Glow background decoration -->
+<div class="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="relative z-10 max-w-2xl mx-auto text-center flex flex-col items-center">
+<div class="w-12 h-12 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center text-primary mb-6">
+<span class="material-symbols-outlined text-[28px]">account_tree</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg lg:text-display-lg text-on-surface font-bold tracking-tight mb-4">
+          Stop guessing, start knowing.
+        </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-8">
+          Join hundreds of engineering teams shipping updates without breaking dependencies.
+        </p>
+<!-- Interactive Email Capture Form -->
+<form class="w-full max-w-md flex flex-col sm:flex-row gap-2 mb-6" onsubmit="event.preventDefault(); alert('Trial invitation dispatched to ' + document.getElementById('cta-email').value);">
+<input class="flex-1 px-4 py-3 rounded-lg bg-surface-container-lowest border border-outline-variant/60 font-code-md text-code-md text-on-surface placeholder:text-on-surface-variant/50 focus:border-primary focus:outline-none transition-colors" id="cta-email" placeholder="name@company.com" required="" type="email"/>
+<button class="px-space-xl py-3 rounded-lg bg-primary-container text-on-primary-container font-title-md text-title-md hover:bg-primary transition-all shadow-[0_0_20px_rgba(6,182,212,0.4)] whitespace-nowrap" type="submit">
+            Get started now
+          </button>
+</form>
+<!-- Micro-Trust Signals -->
+<div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 font-code-sm text-code-sm text-on-surface-variant">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px] text-primary">credit_card_off</span>
+            No credit card required
+          </span>
+<span>•</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px] text-primary">verified_user</span>
+            SOC2 certified
+          </span>
+<span>•</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px] text-primary">schedule</span>
+            14-day free trial
+          </span>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- MODAL: 2-Minute Demo Video Player / Preview                               -->
+<!-- ========================================================================= -->
+<div class="hidden fixed inset-0 z-50 flex items-center justify-center bg-surface-dim/80 backdrop-blur-md px-margin" id="demo-modal">
+<div class="bg-surface-container-low border border-outline-variant/50 rounded-xl p-space-lg max-w-3xl w-full shadow-2xl relative">
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant/30 mb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">play_circle</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-medium">GraphLens Architecture Walkthrough (2:04)</h3>
+</div>
+<button class="text-on-surface-variant hover:text-on-surface" onclick="document.getElementById('demo-modal').classList.add('hidden')">
+<span class="material-symbols-outlined text-[24px]">close</span>
+</button>
+</div>
+<!-- Video Preview Canvas Placeholder -->
+<div class="w-full aspect-video bg-surface-container-lowest rounded-lg border border-outline-variant/30 flex flex-col items-center justify-center p-6 text-center">
+<div class="w-16 h-16 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center text-primary mb-4 animate-pulse">
+<span class="material-symbols-outlined text-[32px]">play_arrow</span>
+</div>
+<p class="font-title-md text-title-md text-on-surface font-semibold mb-1">Interactive Architecture Demo</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-md">
+          Demonstrating natural language dependency analysis on a 350-microservice topology in under 2 minutes.
+        </p>
+</div>
+<div class="mt-4 flex justify-end">
+<button class="px-space-md py-1.5 rounded bg-surface-container-high text-on-surface font-title-md text-title-md" onclick="document.getElementById('demo-modal').classList.add('hidden')">
+          Dismiss
+        </button>
+</div>
+</div>
+</div>
+</div></main><footer class="w-full bg-surface-container-lowest border-t border-outline-variant/30 py-space-xl mt-space-xl"><div class="w-full px-margin"><div class="flex flex-col md:flex-row md:items-center justify-between gap-space-lg pb-space-lg border-b border-outline-variant/20"><div class="flex flex-col gap-space-xs"><div class="flex items-center gap-space-sm"><div class="w-6 h-6 rounded bg-surface-container-high border border-outline-variant/40 flex items-center justify-center text-primary"><span class="material-symbols-outlined text-[14px]">hub</span></div><span class="font-headline-sm text-headline-sm text-on-surface tracking-tight">GraphLens</span></div><p class="font-body-sm text-body-sm text-on-surface-variant">Connected knowledge graph for engineering teams.</p></div><nav class="flex flex-wrap items-center gap-space-lg" data-active-classes="text-primary font-medium"><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="privacy-policy" href="#">Privacy Policy</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="terms-of-service" href="#">Terms of Service</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="security" href="#">Security</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="status" href="#">Status</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="github" href="#">GitHub</a><a class="font-body-sm text-body-sm text-on-surface-variant hover:text-on-surface transition-colors" data-path="docs" href="#">Documentation</a></nav></div><div class="pt-space-md flex items-center justify-between"><p class="font-code-sm text-code-sm text-on-surface-variant">© 2025 GraphLens, Inc. All rights reserved.</p><div class="flex items-center gap-space-xs"><span class="w-2 h-2 rounded-full bg-primary animate-ping"></span><span class="font-code-sm text-code-sm text-on-surface-variant">All systems operational</span></div></div></div></footer></body></html>
