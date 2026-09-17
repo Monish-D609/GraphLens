@@ -3,39 +3,39 @@ import { useState } from "react";
 
 const faqs = [
   {
-    q: "How is this different from basic search?",
-    a: "Traditional search finds keywords, but GraphLens understands relationships, like which service calls another.",
+    q: "How does Graph-Augmented RAG differ from standard vector RAG?",
+    a: "Standard vector RAG calculates cosine similarity over isolated text chunks, ignoring cross-file call chains. GraphLens first identifies seed entities via vector search, then executes an N-hop graph traversal across directed edges to assemble full architectural dependency paths before LLM synthesis.",
   },
   {
-    q: "Does this require us to rewrite our docs?",
-    a: "No, it works with your existing documentation and code comments as they are today.",
+    q: "How are code entities and service relationships extracted?",
+    a: "The ingestion pipeline parses source files using AST analyzers (Tree-sitter, regex grammar extractors, protobuf compilers). It detects exported RPC definitions, HTTP route handlers, and client invocation calls, linking them to corresponding documentation sections.",
   },
   {
-    q: "Where is our data stored?",
-    a: "We offer flexible deployment options, including private cloud, to ensure your proprietary architecture remains secure.",
+    q: "What embedding models and LLM providers are supported?",
+    a: "The project uses Cloudflare Workers AI as the primary provider (running bge-small-en-v1.5 and LLaMA models), with OpenRouter as an automatic fallback provider. It also supports local sentence-transformers (all-MiniLM-L6-v2) for offline development.",
   },
   {
-    q: "How long does indexing take?",
-    a: "Most teams have a functional knowledge graph within an hour of connecting their primary documentation sources.",
+    q: "How is the knowledge graph stored and traversed?",
+    a: "The graph is modeled as an in-memory NetworkX directed multigraph serialized via GraphML and JSON. Graph queries perform breadth-first search (BFS) up to a configurable traversal depth (default k=2) to identify upstream callers and downstream dependencies.",
   },
   {
-    q: "Can it handle microservices?",
-    a: "Yes, it is specifically designed to bridge the gaps between fragmented service documentation in microservice environments.",
+    q: "Does GraphLens support side-by-side RAG evaluation?",
+    a: "Yes. The backend /api/query endpoint supports mode='compare', which generates two parallel responses: one using vanilla top-k vector chunks, and one augmented with multi-hop graph nodes, allowing direct assessment of hallucination reduction.",
   },
 ];
 
 export default function FAQ() {
-  const [openIdx, setOpenIdx] = useState<number | null>(null);
+  const [openIdx, setOpenIdx] = useState<number | null>(0);
 
   return (
     <section className="w-full px-margin py-24 bg-surface border-t border-outline-variant/20" id="faq">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-16">
           <span className="font-mono text-label-xs uppercase tracking-widest text-primary font-semibold">
-            FAQ
+            Technical Architecture
           </span>
           <h2 className="font-geist text-headline-lg text-on-surface tracking-tight mt-2">
-            Frequently Asked Questions
+            Frequently Asked Questions &amp; System Design
           </h2>
         </div>
 
@@ -43,10 +43,10 @@ export default function FAQ() {
           {faqs.map((faq, i) => (
             <div
               key={i}
-              className="rounded-xl bg-surface-container-low border border-outline-variant/30 overflow-hidden"
+              className="rounded-2xl bg-surface-container-low border border-outline-variant/30 overflow-hidden"
             >
               <button
-                className="w-full px-space-lg py-4 flex items-center justify-between text-left focus:outline-none"
+                className="w-full px-space-lg py-4 flex items-center justify-between text-left focus:outline-none cursor-pointer hover:bg-surface-container/50 transition-colors"
                 onClick={() => setOpenIdx(openIdx === i ? null : i)}
               >
                 <span className="font-geist text-title-md text-on-surface font-medium">
@@ -61,7 +61,7 @@ export default function FAQ() {
                 </span>
               </button>
               {openIdx === i && (
-                <div className="px-space-lg pb-4 pt-1 text-on-surface-variant font-inter text-body-md border-t border-outline-variant/10">
+                <div className="px-space-lg pb-5 pt-1 text-on-surface-variant font-inter text-body-md border-t border-outline-variant/10 leading-relaxed">
                   {faq.a}
                 </div>
               )}

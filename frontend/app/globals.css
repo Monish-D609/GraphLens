@@ -1,22 +1,290 @@
 @import "tailwindcss";
 
-/* ─── CSS custom properties from Stitch design tokens ─────────────────── */
-:root {
-  --font-geist: "Geist", sans-serif;
-  --font-inter: "Inter", sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+/* ─── Tailwind v4: define ALL design tokens in @theme ──────────────────── */
+@theme {
+  /* Colors — Stitch Kinetic Telemetry */
+  --color-primary:                   #4cd7f6;
+  --color-primary-container:         #06b6d4;
+  --color-primary-fixed:             #acedff;
+  --color-primary-fixed-dim:         #4cd7f6;
+  --color-on-primary:                #003640;
+  --color-on-primary-container:      #00424f;
+  --color-on-primary-fixed:          #001f26;
+  --color-on-primary-fixed-variant:  #004e5c;
+  --color-inverse-primary:           #00687a;
+
+  --color-secondary:                 #d0bcff;
+  --color-secondary-container:       #571bc1;
+  --color-secondary-fixed:           #e9ddff;
+  --color-secondary-fixed-dim:       #d0bcff;
+  --color-on-secondary:              #3c0091;
+  --color-on-secondary-container:    #c4abff;
+  --color-on-secondary-fixed:        #23005c;
+  --color-on-secondary-fixed-variant:#5516be;
+
+  --color-tertiary:                  #2fd9f4;
+  --color-tertiary-container:        #00b7cf;
+  --color-tertiary-fixed:            #a2eeff;
+  --color-tertiary-fixed-dim:        #2fd9f4;
+  --color-on-tertiary:               #00363e;
+  --color-on-tertiary-container:     #00434d;
+  --color-on-tertiary-fixed:         #001f25;
+  --color-on-tertiary-fixed-variant: #004e5a;
+
+  --color-error:                     #ffb4ab;
+  --color-error-container:           #93000a;
+  --color-on-error:                  #690005;
+  --color-on-error-container:        #ffdad6;
+
+  --color-surface:                   #0f131c;
+  --color-surface-dim:               #0f131c;
+  --color-surface-bright:            #353942;
+  --color-surface-tint:              #4cd7f6;
+  --color-surface-variant:           #31353e;
+  --color-surface-container-lowest:  #0a0e16;
+  --color-surface-container-low:     #181c24;
+  --color-surface-container:         #1c2028;
+  --color-surface-container-high:    #262a33;
+  --color-surface-container-highest: #31353e;
+
+  --color-background:                #0f131c;
+  --color-on-background:             #dfe2ee;
+  --color-on-surface:                #dfe2ee;
+  --color-on-surface-variant:        #bcc9cd;
+  --color-inverse-surface:           #dfe2ee;
+  --color-inverse-on-surface:        #2c3039;
+
+  --color-outline:                   #869397;
+  --color-outline-variant:           #3d494c;
+
+  /* Fonts */
+  --font-geist: var(--font-geist), "Geist", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-inter: var(--font-inter), "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Font sizes (name → [size, line-height]) */
+  --text-display-lg:        40px;
+  --text-display-lg--line-height: 48px;
+  --text-display-lg--letter-spacing: -0.025em;
+
+  --text-display-lg-mobile: 30px;
+  --text-display-lg-mobile--line-height: 38px;
+  --text-display-lg-mobile--letter-spacing: -0.02em;
+
+  --text-headline-lg:       28px;
+  --text-headline-lg--line-height: 36px;
+  --text-headline-lg--letter-spacing: -0.02em;
+
+  --text-headline-md:       22px;
+  --text-headline-md--line-height: 28px;
+  --text-headline-md--letter-spacing: -0.015em;
+
+  --text-headline-sm:       18px;
+  --text-headline-sm--line-height: 24px;
+  --text-headline-sm--letter-spacing: -0.01em;
+
+  --text-title-md:          15px;
+  --text-title-md--line-height: 20px;
+  --text-title-md--letter-spacing: -0.005em;
+
+  --text-body-lg:           15px;
+  --text-body-lg--line-height: 24px;
+
+  --text-body-md:           13px;
+  --text-body-md--line-height: 20px;
+
+  --text-body-sm:           12px;
+  --text-body-sm--line-height: 16px;
+
+  --text-code-md:           13px;
+  --text-code-md--line-height: 20px;
+  --text-code-md--letter-spacing: -0.01em;
+
+  --text-code-sm:           11px;
+  --text-code-sm--line-height: 16px;
+
+  --text-label-md:          12px;
+  --text-label-md--line-height: 16px;
+  --text-label-md--letter-spacing: 0.02em;
+
+  --text-label-xs:          10px;
+  --text-label-xs--line-height: 12px;
+  --text-label-xs--letter-spacing: 0.06em;
+
+  /* Spacing */
+  --spacing-space-xs:       0.25rem;
+  --spacing-space-sm:       0.5rem;
+  --spacing-space-md:       0.75rem;
+  --spacing-space-lg:       1.25rem;
+  --spacing-space-xl:       2rem;
+  --spacing-margin:         1.5rem;
+  --spacing-margin-mobile:  0.75rem;
+  --spacing-gutter:         1rem;
+
+  /* Border radius */
+  --radius-sm:   0.125rem;
+  --radius-DEFAULT: 0.125rem;
+  --radius-lg:   0.25rem;
+  --radius-xl:   0.5rem;
+  --radius-2xl:  0.75rem;
+
+  /* Animations */
+  --animate-pulse-slow:  pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-dash:        dash 20s linear infinite;
+  --animate-fade-in:     fadeIn 0.6s ease-out forwards;
+  --animate-slide-up:    slideUp 0.6s ease-out forwards;
+  --animate-glow-pulse:  glowPulse 2s ease-in-out infinite;
+  --animate-node-glow:   nodeGlow 3s ease-in-out infinite;
+
+  /* Keyframes */
+  @keyframes dash {
+    to { stroke-dashoffset: -100; }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 16px rgba(6,182,212,0.35); }
+    50%       { box-shadow: 0 0 32px rgba(6,182,212,0.65); }
+  }
+  @keyframes nodeGlow {
+    0%, 100% { box-shadow: 0 0 20px rgba(6,182,212,0.25); }
+    50%       { box-shadow: 0 0 40px rgba(6,182,212,0.55); }
+  }
 }
 
-/* ─── Scrollbar hidden (as in Stitch) ─────────────────────────────────── */
-::-webkit-scrollbar { display: none; }
-* { scrollbar-width: none; }
+/* ─── Base layer ─────────────────────────────────────────────────────────── */
+@layer base {
+  html {
+    background-color: #0f131c;
+    color: #dfe2ee;
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: #0f131c;
+    color: #dfe2ee;
+    font-family: "Inter", "Inter Fallback", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior: none;
+    min-height: 100vh;
+  }
 
-/* ─── Base resets ──────────────────────────────────────────────────────── */
-html, body { margin: 0; padding: 0; overscroll-behavior: none; }
-main > :first-child { margin-top: 0 !important; }
-main > :last-child  { margin-bottom: 0 !important; }
+  /* Scrollbar hidden */
+  ::-webkit-scrollbar { display: none; }
+  * { scrollbar-width: none; }
+}
 
-/* ─── Material Symbols utility class ──────────────────────────────────── */
+/* ─── Utility layer  ─────────────────────────────────────────────────────── */
+@layer utilities {
+  /* Font family utilities */
+  .font-geist { font-family: var(--font-geist), "Geist", sans-serif; }
+  .font-inter  { font-family: var(--font-inter), "Inter", sans-serif; }
+  .font-mono   { font-family: "JetBrains Mono", ui-monospace, monospace; }
+
+  /* Typography utilities (Stitch token names) */
+  .text-display-lg        { font-size: 40px; line-height: 48px; letter-spacing: -0.025em; font-weight: 600; }
+  .text-display-lg-mobile { font-size: 30px; line-height: 38px; letter-spacing: -0.02em;  font-weight: 600; }
+  .text-headline-lg       { font-size: 28px; line-height: 36px; letter-spacing: -0.02em;  font-weight: 600; }
+  .text-headline-md       { font-size: 22px; line-height: 28px; letter-spacing: -0.015em; font-weight: 600; }
+  .text-headline-sm       { font-size: 18px; line-height: 24px; letter-spacing: -0.01em;  font-weight: 500; }
+  .text-title-md          { font-size: 15px; line-height: 20px; letter-spacing: -0.005em; font-weight: 500; }
+  .text-body-lg           { font-size: 15px; line-height: 24px; }
+  .text-body-md           { font-size: 13px; line-height: 20px; }
+  .text-body-sm           { font-size: 12px; line-height: 16px; }
+  .text-code-md           { font-size: 13px; line-height: 20px; letter-spacing: -0.01em; }
+  .text-code-sm           { font-size: 11px; line-height: 16px; }
+  .text-label-md          { font-size: 12px; line-height: 16px; letter-spacing: 0.02em;  font-weight: 500; }
+  .text-label-xs          { font-size: 10px; line-height: 12px; letter-spacing: 0.06em;  font-weight: 600; }
+
+  /* Spacing utilities */
+  .px-margin    { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .p-space-xl   { padding: 2rem; }
+  .p-space-lg   { padding: 1.25rem; }
+  .p-space-md   { padding: 0.75rem; }
+  .p-space-sm   { padding: 0.5rem; }
+  .px-space-xl  { padding-left: 2rem; padding-right: 2rem; }
+  .px-space-lg  { padding-left: 1.25rem; padding-right: 1.25rem; }
+  .px-space-md  { padding-left: 0.75rem; padding-right: 0.75rem; }
+  .px-space-sm  { padding-left: 0.5rem; padding-right: 0.5rem; }
+  .px-space-xs  { padding-left: 0.25rem; padding-right: 0.25rem; }
+  .py-space-lg  { padding-top: 1.25rem; padding-bottom: 1.25rem; }
+  .py-space-md  { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+  .gap-space-xl { gap: 2rem; }
+  .gap-space-lg { gap: 1.25rem; }
+  .gap-space-md { gap: 0.75rem; }
+  .gap-space-sm { gap: 0.5rem; }
+  .gap-space-xs { gap: 0.25rem; }
+  .ml-space-xs  { margin-left: 0.25rem; }
+  .mb-space-lg  { margin-bottom: 1.25rem; }
+  .mt-space-xl  { margin-top: 2rem; }
+  .gap-space-xl { gap: 2rem; }
+
+  /* Color bg / text utilities */
+  .bg-surface               { background-color: #0f131c; }
+  .bg-surface-dim           { background-color: #0f131c; }
+  .bg-surface-container-lowest { background-color: #0a0e16; }
+  .bg-surface-container-low { background-color: #181c24; }
+  .bg-surface-container     { background-color: #1c2028; }
+  .bg-surface-container-high { background-color: #262a33; }
+  .bg-surface-container-highest { background-color: #31353e; }
+  .bg-primary               { background-color: #4cd7f6; }
+  .bg-primary-container     { background-color: #06b6d4; }
+  .bg-primary-fixed         { background-color: #acedff; }
+  .bg-primary-fixed-dim     { background-color: #4cd7f6; }
+  .bg-secondary             { background-color: #d0bcff; }
+  .bg-secondary-container   { background-color: #571bc1; }
+  .bg-tertiary              { background-color: #2fd9f4; }
+  .bg-tertiary-container    { background-color: #00b7cf; }
+  .bg-error                 { background-color: #ffb4ab; }
+  .bg-error-container       { background-color: #93000a; }
+  .bg-on-primary            { background-color: #003640; }
+  .bg-on-error              { background-color: #690005; }
+  .bg-surface-variant       { background-color: #31353e; }
+
+  .text-on-surface          { color: #dfe2ee; }
+  .text-on-surface-variant  { color: #bcc9cd; }
+  .text-on-background       { color: #dfe2ee; }
+  .text-primary             { color: #4cd7f6; }
+  .text-primary-container   { color: #06b6d4; }
+  .text-primary-fixed       { color: #acedff; }
+  .text-primary-fixed-dim   { color: #4cd7f6; }
+  .text-secondary           { color: #d0bcff; }
+  .text-tertiary            { color: #2fd9f4; }
+  .text-tertiary-fixed-dim  { color: #2fd9f4; }
+  .text-error               { color: #ffb4ab; }
+  .text-on-error            { color: #690005; }
+  .text-on-error-container  { color: #ffdad6; }
+  .text-on-primary          { color: #003640; }
+  .text-on-primary-container { color: #00424f; }
+  .text-on-primary-fixed    { color: #001f26; }
+  .text-on-secondary        { color: #3c0091; }
+  .text-on-secondary-container { color: #c4abff; }
+  .text-on-tertiary         { color: #00363e; }
+  .text-on-tertiary-container { color: #00434d; }
+  .text-outline             { color: #869397; }
+  .text-outline-variant     { color: #3d494c; }
+  .text-inverse-primary     { color: #00687a; }
+
+  .border-outline           { border-color: #869397; }
+  .border-outline-variant   { border-color: #3d494c; }
+  .border-primary           { border-color: #4cd7f6; }
+  .border-primary-container { border-color: #06b6d4; }
+  .border-error             { border-color: #ffb4ab; }
+  .border-on-surface-variant { border-color: #bcc9cd; }
+
+  /* Animation utilities */
+  .animate-dash     { animation: dash 20s linear infinite; }
+  .animate-slide-up { animation: slideUp 0.6s ease-out forwards; }
+  .animate-glow-pulse { animation: glowPulse 2s ease-in-out infinite; }
+  .node-glow        { animation: nodeGlow 3s ease-in-out infinite; }
+}
+
+/* ─── Material Symbols — text rendering fix ─────────────────────────────── */
 .material-symbols-outlined {
   font-family: 'Material Symbols Outlined';
   font-weight: normal;
@@ -32,36 +300,5 @@ main > :last-child  { margin-bottom: 0 !important; }
   -webkit-font-feature-settings: 'liga';
   font-feature-settings: 'liga';
   -webkit-font-smoothing: antialiased;
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  vertical-align: middle;
 }
-
-/* ─── SVG animated dash ────────────────────────────────────────────────── */
-@keyframes dash {
-  to { stroke-dashoffset: -100; }
-}
-.animate-dash { animation: dash 20s linear infinite; }
-
-/* ─── Smooth hover transitions ─────────────────────────────────────────── */
-a, button { transition: all 0.15s ease; }
-
-/* ─── FAQ accordion transition ─────────────────────────────────────────── */
-.faq-content {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease;
-}
-.faq-content.open { max-height: 200px; }
-
-/* ─── Node glow animation ──────────────────────────────────────────────── */
-@keyframes nodeGlow {
-  0%, 100% { box-shadow: 0 0 20px rgba(6,182,212,0.25); }
-  50%       { box-shadow: 0 0 40px rgba(6,182,212,0.55); }
-}
-.node-glow { animation: nodeGlow 3s ease-in-out infinite; }
-
-/* ─── Slide-up entrance ────────────────────────────────────────────────── */
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.animate-slide-up { animation: slideUp 0.6s ease-out forwards; }

@@ -2,52 +2,50 @@ export default function Features() {
   const features = [
     {
       icon: "account_tree",
-      title: "Dependency Mapping",
-      desc: "Automatically identify which services rely on specific APIs or databases without manual tagging.",
+      title: "AST Dependency Extraction",
+      desc: "Parses service endpoints, client invocations, and database schemas directly from source code and protobuf definitions.",
       micro: {
         icon: "polyline",
         iconColor: "text-tertiary",
-        label: "Auto-Discovered: BillingGateway → AuthEngine",
-        badge: "Zero-Config",
+        label: "Discovered: BillingGateway → AuthEngine:v1",
+        badge: "AST Node",
         badgeClass: "bg-primary/15 text-primary border border-primary/30",
       },
     },
     {
       icon: "link",
-      title: "Source-Linked Answers",
-      desc: "Every response includes direct links to the specific lines of documentation used to generate the answer.",
+      title: "Source-Linked Line Citations",
+      desc: "Every generated answer links back to the exact line of code and documentation source used to formulate the relationship.",
       micro: {
         icon: "description",
         iconColor: "text-on-surface-variant",
-        label: "Citation: internal/auth/auth_handler.go:142",
-        badge: "Jump to Code",
-        badgeClass: "text-primary",
-        isLink: true,
+        label: "Citation: services/auth/handler.go:88",
+        badge: "Verified AST",
+        badgeClass: "text-primary font-mono",
       },
     },
     {
       icon: "crisis_alert",
-      title: "Change Impact Analysis",
-      desc: "Type in a planned change to see a list of downstream systems that might be affected before you deploy.",
+      title: "Transitive Impact Analysis",
+      desc: "Traverses graph edges to compute downstream blast-radius paths when an API endpoint or contract undergoes modification.",
       micro: {
         icon: "warning",
         iconColor: "text-error",
-        label: "Deprecate /api/v1/sessions",
-        badge: "High Risk / 4 Downstream Services",
+        label: "Path: /v1/tokens/introspect → Mobile GW",
+        badge: "Downstream Deprecation",
         badgeClass: "bg-error-container text-on-error-container font-semibold",
       },
     },
     {
-      icon: "autorenew",
-      title: "Automated Indexing",
-      desc: "The knowledge graph updates whenever you merge a PR or edit a wiki page, keeping your insights current.",
+      icon: "compare_arrows",
+      title: "Dual RAG Comparison Engine",
+      desc: "Executes side-by-side retrieval benchmarks comparing standard vector cosine search against graph-augmented retrieval.",
       micro: {
-        icon: "fiber_manual_record",
-        iconColor: "text-primary animate-ping",
-        label: "PR #1042 merged · main",
-        badge: "Graph re-indexed in 4.2s",
-        badgeClass: "text-primary font-medium",
-        badgeRight: true,
+        icon: "data_thresholding",
+        iconColor: "text-secondary",
+        label: "Mode: 'vanilla' vs 'graph' query",
+        badge: "Evaluation Benchmark",
+        badgeClass: "bg-secondary-container text-on-secondary-container font-medium",
       },
     },
   ];
@@ -59,11 +57,11 @@ export default function Features() {
           <div>
             <span className="font-mono text-label-xs uppercase tracking-widest text-primary font-semibold">Core Capabilities</span>
             <h2 className="font-geist text-headline-lg text-on-surface tracking-tight mt-2">
-              Engineered for high-concurrency architectures
+              Engineered for distributed system architectures
             </h2>
           </div>
           <p className="font-inter text-body-md text-on-surface-variant max-w-md">
-            Built for teams navigating distributed systems where manual documentation becomes legacy the second it is merged.
+            Combines dense vector embeddings with deterministic in-memory NetworkX multigraph traversal for deep dependency tracing.
           </p>
         </div>
 
@@ -71,9 +69,9 @@ export default function Features() {
           {features.map((f) => (
             <div
               key={f.title}
-              className="p-space-xl rounded-xl bg-surface-container-low border border-outline-variant/40 hover:border-primary/40 transition-all duration-200"
+              className="p-space-xl rounded-2xl bg-surface-container-low border border-outline-variant/40 hover:border-primary/40 transition-all duration-200"
             >
-              <div className="w-12 h-12 rounded-lg bg-surface-container-high border border-outline-variant/50 flex items-center justify-center text-primary mb-6">
+              <div className="w-12 h-12 rounded-xl bg-surface-container-high border border-outline-variant/50 flex items-center justify-center text-primary mb-6">
                 <span className="material-symbols-outlined text-[24px]">{f.icon}</span>
               </div>
               <h3 className="font-geist text-headline-sm text-on-surface font-semibold mb-3">{f.title}</h3>
