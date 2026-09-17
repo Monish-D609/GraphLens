@@ -1,0 +1,31 @@
+# GraphLens Backend Dependencies
+# Install: pip install -r requirements.txt
+
+# Core
+fastapi==0.111.0
+uvicorn[standard]==0.30.1
+pydantic==2.7.4
+python-dotenv==1.0.1
+pyyaml==6.0.2
+httpx==0.27.0
+
+# Ingestion & Processing
+pathspec==0.12.1          # .gitignore-style file filtering
+chardet==5.2.0            # Encoding detection
+
+# Embeddings (local, zero-cost)
+sentence-transformers==3.0.1
+torch==2.3.1              # CPU only — lightweight
+numpy==1.26.4
+
+# Vector Store
+chromadb==0.5.3
+
+# Graph
+networkx==3.3
+
+# LLM Client
+openai==1.35.5            # OpenAI-compatible — works with OpenRouter
+
+# CORS
+python-multipart==0.0.9

@@ -1,0 +1,68 @@
+# GraphLens Configuration
+# All parameters configurable without code changes (NFR-5)
+
+# --- Corpus ---
+corpus:
+  directory: "./corpus"
+  supported_extensions: [".md", ".txt", ".rst"]
+
+# --- Chunking ---
+chunking:
+  chunk_size: 512        # chars (approx — sentence-aware split)
+  chunk_overlap: 64
+  separator: "\n\n"
+
+# --- Embedding ---
+# Priority: Cloudflare Workers AI → local sentence-transformers (auto-selected by get_embedder())
+embedding:
+  # Cloudflare (primary — free tier 10K req/day)
+  cloudflare_embed_model: "@cf/baai/bge-small-en-v1.5"   # 384-dim, fast
+  # Local fallback — downloads ~90 MB once, zero ongoing cost
+  local_model: "all-MiniLM-L6-v2"
+
+# --- Vector Store ---
+vector_store:
+  type: "chromadb"
+  persist_path: "./data/vector_store"
+  collection_name: "graphlens_chunks"
+  top_k: 5
+
+# --- Graph ---
+graph:
+  store_path: "./data/graph_store/graph.json"
+  traversal_depth: 2    # 1 or 2 hops (FR-6.2, PR-11)
+  entity_types:
+    - "module"
+    - "class"
+    - "function"
+    - "package"
+  relationship_types:
+    - "imports"
+    - "depends_on"
+    - "calls"
+    - "inherits_from"
+    - "defines"
+
+# --- Retrieval ---
+retrieval:
+  context_cap: 8        # Max chunks in merged context (FR-7.3)
+  dedup_strategy: "chunk_id"
+
+# --- Generation ---
+# Priority: Cloudflare Workers AI → OpenRouter (auto-selected by LLMClient)
+generation:
+  # Cloudflare (primary — free tier 10K neurons/day)
+  cloudflare_model: "@cf/meta/llama-3.1-8b-instruct"
+  # OpenRouter fallback — free models, no credit card needed
+  model: "google/gemma-2-9b-it:free"
+  fallback_model: "meta-llama/llama-3.1-8b-instruct:free"
+  max_tokens: 1024
+  temperature: 0.1
+
+# --- API ---
+api:
+  host: "0.0.0.0"
+  port: 8000
+  cors_origins:
+    - "http://localhost:5173"
+    - "https://*.vercel.app"

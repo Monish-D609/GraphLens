@@ -1,0 +1,90 @@
+name: GraphLens CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ── Frontend build check ──────────────────────────────────────────────────
+  frontend:
+    name: Frontend Build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload dist artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: frontend/dist/
+
+  # ── Backend lint & import check ───────────────────────────────────────────
+  backend:
+    name: Backend Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: backend/requirements.txt
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r backend/requirements.txt
+          pip install ruff
+
+      - name: Lint with ruff
+        run: ruff check backend/ --select E,F,W --ignore E501
+        continue-on-error: true   # non-blocking during early dev
+
+      - name: Check imports (dry-run)
+        run: python -c "
+          import sys, os
+          sys.path.insert(0, '.')
+          # Verify modules import without crashing (no external calls)
+          from backend.ingestion.loader import load_corpus
+          from backend.ingestion.chunker import chunk_documents
+          from backend.retrieval.hybrid import merge_results
+          print('All backend imports OK')
+        "
+        env:
+          OPENROUTER_API_KEY: dummy
+          CLOUDFLARE_ACCOUNT_ID: dummy
+          CLOUDFLARE_API_TOKEN: dummy
+
+  # ── Corpus downloader smoke test ──────────────────────────────────────────
+  corpus-script:
+    name: Corpus Script Syntax
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install httpx
+      - run: python -m py_compile scripts/download_corpus.py && echo "Syntax OK"
