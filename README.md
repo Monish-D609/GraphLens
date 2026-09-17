@@ -4,7 +4,7 @@
 
 GraphLens is a **retrieval-augmented generation (RAG) system** that combines conventional vector similarity search with a **knowledge graph** built from the same documents. It is designed to answer questions about technical documentation — including questions that involve relationships between components, such as inheritance, dependencies, and function calls — which flat vector search alone often struggles with.
 
-Built on **Django REST Framework documentation** as its knowledge base, GraphLens ingests, embeds, graphs, and queries a 36-document corpus through a **FastAPI backend** and a **React web interface**.
+Built on **Django REST Framework documentation** as its knowledge base, GraphLens ingests, embeds, graphs, and queries a 36-document corpus through a **FastAPI backend** and a **React + Next.js web interface**.
 
 ---
 
@@ -36,7 +36,7 @@ During ingestion, entities (modules, classes, functions) and relationships (`imp
 2. The graph is traversed outward (BFS, configurable 1–2 hops) to find related nodes.
 3. Chunks associated with those traversed nodes are retrieved.
 4. These **graph-retrieved chunks are merged with vector-retrieved chunks**, deduplicated, and capped at a configurable context size.
-5. The merged context is passed to an **LLM** (Cloudflare Workers AI, with OpenRouter as fallback) to generate a grounded answer with inline source citations.
+5. The merged context is passed to an **LLM** (Cloudflare Workers AI, with OpenRouter as fallback) to generate an answer grounded in the retrieved documentation, with inline source citations.
 
 The result is a retrieval system that can surface contextually relevant chunks that vector similarity would not rank highly — particularly for relationship-based questions.
 
@@ -49,13 +49,14 @@ The result is a retrieval system that can surface contextually relevant chunks t
 - **Knowledge graph construction** — Rule-based + LLM-assisted entity/relationship extraction into a NetworkX directed graph
 - **Graph traversal retrieval** — BFS traversal across `imports`, `depends_on`, `calls`, `inherits_from`, `defines` edges
 - **Hybrid retrieval merger** — Vector and graph results merged, deduplicated, and context-capped
-- **Grounded LLM generation** — Answers are generated strictly from retrieved context, with inline `[Source: filename.md]` citations
+- **Grounded LLM generation** — LLM is instructed to answer only from provided context chunks; if no chunks are retrieved, a fallback message is returned without calling the LLM
+- **Inline source citations** — `[Source: filename.md]` references are extracted from the LLM output and returned as structured metadata
 - **Three retrieval modes** — `vanilla` (vector only), `graph` (graph-augmented), `compare` (both side-by-side)
-- **Graph traversal trace** — The retrieval path (nodes visited, edges followed) is returned alongside the answer for inspection
+- **Graph traversal trace** — The retrieval path (nodes visited, edges followed) is returned alongside the answer
 - **LLM provider fallback** — Cloudflare Workers AI (primary) → OpenRouter free models (automatic fallback)
 - **Configurable parameters** — Chunk size, traversal depth, context cap, model selection — all in `config.yaml`, no code changes needed
 - **REST API** — Full FastAPI backend with Swagger UI at `/docs`
-- **Web interface** — React frontend with side-by-side Vanilla vs Graph RAG comparison playground
+- **Web interface** — React + Next.js frontend with side-by-side Vanilla vs Graph RAG comparison playground
 
 ---
 
@@ -124,7 +125,7 @@ Documents (.md files — DRF documentation)
 
 **5. Hybrid retrieval** — At query time, vector similarity retrieves the top-k semantically relevant chunks. In graph mode, entities in the query are matched to graph nodes, and a configurable BFS traversal (default: 2 hops) fetches associated chunks from the graph. Both result sets are merged, deduplicated by chunk ID, and capped at `context_cap: 8` chunks.
 
-**6. LLM generation** — The merged context is assembled into a prompt. The LLM is instructed to answer strictly from provided context and cite sources inline. Cloudflare Workers AI is tried first; OpenRouter free models serve as automatic fallback.
+**6. LLM generation** — The merged context is assembled into a prompt. The LLM is instructed to answer only from provided context and to cite sources inline using `[Source: filename.md]` syntax. Cloudflare Workers AI is tried first; OpenRouter free models serve as automatic fallback.
 
 ---
 
@@ -140,7 +141,7 @@ Documents (.md files — DRF documentation)
 4. These are merged with the vector top-k results.
 5. The LLM answers from this enriched context, citing sources like `[Source: viewsets.md]`.
 
-In **vanilla mode**, retrieval would return only the chunks most semantically similar to "ModelViewSet inherit" — which may not include the full inheritance chain if it is distributed across multiple document pages.
+In **vanilla mode**, retrieval returns only the chunks most semantically similar to "ModelViewSet inherit" — which may not include the full inheritance chain if it is distributed across multiple document pages.
 
 ---
 
@@ -171,12 +172,12 @@ In **vanilla mode**, retrieval would return only the chunks most semantically si
 | Content chunking | `backend/ingestion/chunker.py` — configurable `chunk_size` (default 512) and `chunk_overlap` (64) with paragraph-aware splitting |
 | Embeddings | `backend/vector/embedder.py` — Cloudflare BGE (`@cf/baai/bge-small-en-v1.5`) as primary; `all-MiniLM-L6-v2` via `sentence-transformers` as local fallback |
 | Vector storage and retrieval | `backend/vector/store.py` — ChromaDB, persisted to `./data/vector_store` |
-| Accept user questions | React web interface at `localhost:3000`; also `POST /api/query` REST endpoint |
+| Accept user questions | React + Next.js web interface at `localhost:3000`; also `POST /api/query` REST endpoint |
 | LLM-generated answers | `backend/generation/llm.py` — Cloudflare Workers AI (`@cf/meta/llama-3.1-8b-instruct`) primary; OpenRouter (`google/gemma-2-9b-it:free`) fallback |
-| Knowledge-grounded answers | System prompt instructs the LLM to answer **only** from provided context chunks; answers are rejected if context is insufficient |
+| Knowledge-grounded answers | System prompt instructs the LLM to answer only from provided context; if no chunks are retrieved, a fallback message is returned directly without calling the LLM |
 | User interface | React + Next.js frontend with query input, example queries, and side-by-side comparison playground |
-| Source citations | Inline `[Source: filename.md]` citations extracted from LLM output |
-| Multiple documents | 36-document corpus covering serializers, views, authentication, permissions, routers, filtering, and more |
+| Source citations | `[Source: filename.md]` references are extracted from LLM output via regex and returned as structured `citations` field |
+| Multiple documents (bonus) | 36-document corpus covering serializers, views, authentication, permissions, routers, filtering, and more |
 | Improved retrieval (bonus) | Graph-augmented retrieval via NetworkX knowledge graph with BFS traversal |
 | Retrieval comparison (bonus) | `mode: "compare"` returns both vanilla and graph answers in a single response for direct comparison |
 
@@ -186,7 +187,7 @@ In **vanilla mode**, retrieval would return only the chunks most semantically si
 
 | Layer | Technology |
 |---|---|
-| Frontend | React, Next.js |
+| Frontend | React 19, Next.js 16 |
 | Backend | FastAPI (Python) |
 | Embeddings | Cloudflare Workers AI BGE (`@cf/baai/bge-small-en-v1.5`) / `sentence-transformers` (`all-MiniLM-L6-v2`) |
 | Vector Store | ChromaDB |
@@ -247,7 +248,7 @@ python scripts/download_corpus.py
 ### 4. Start the backend
 
 ```bash
-uvicorn backend.api.main:app --reload
+python -m uvicorn backend.api.main:app --reload
 # API available at http://localhost:8000
 # Swagger UI at http://localhost:8000/docs
 ```
@@ -263,7 +264,7 @@ npm run dev
 ### 6. Ingest and query
 
 1. Open `http://localhost:3000`
-2. Trigger ingestion — click the ingest button or `POST /api/ingest` (runs in the background; poll `/api/ingest/status` for progress)
+2. Trigger ingestion — `POST /api/ingest` (runs in the background; poll `/api/ingest/status` for progress)
 3. Once ingestion is complete, ask a question in the playground
 
 ---
@@ -333,7 +334,8 @@ GraphLens/
 │   ├── generation/       # LLM client (Cloudflare → OpenRouter fallback)
 │   └── api/              # FastAPI application and all endpoints
 ├── frontend/
-│   └── components/       # React components — query input, answer panels, graph trace
+│   ├── app/              # Next.js app router (page.tsx, layout.tsx, globals.css)
+│   └── components/       # React components — Hero playground, answer panels, graph trace
 ├── scripts/
 │   └── download_corpus.py
 ├── corpus/               # Downloaded documentation (git-ignored)
