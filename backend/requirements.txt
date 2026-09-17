@@ -29,3 +29,8 @@ openai==1.35.5            # OpenAI-compatible — works with OpenRouter
 
 # CORS
 python-multipart==0.0.9
+
+# Testing
+pytest>=8.0.0
+pytest-asyncio>=0.24.0
+

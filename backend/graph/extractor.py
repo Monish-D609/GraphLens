@@ -27,10 +27,14 @@ def normalize_entity(name: str) -> str:
     return name
 
 
-# ─── Rule-based extraction (FR-3.3) ─────────────────────────────────────────
+from pathlib import Path
 
+PYTHON_IMPORT_FROM_RE = re.compile(
+    r'^from\s+([\w.]+)\s+import\s+([\w., *]+)',
+    re.MULTILINE
+)
 PYTHON_IMPORT_RE = re.compile(
-    r'^(?:from\s+([\w.]+)\s+import|import\s+([\w., ]+))',
+    r'^import\s+([\w., ]+)',
     re.MULTILINE
 )
 MODULE_DEF_RE = re.compile(r'^class\s+(\w+)', re.MULTILINE)
@@ -45,28 +49,50 @@ def rule_based_extract(chunk_text: str, chunk_id: str, doc_path: str) -> dict:
     entities = []
     relationships = []
 
-    # Extract module name from doc path
-    doc_module = normalize_entity(doc_path.split("/")[-1])
-    entities.append({
-        "name": doc_module,
-        "type": "module",
-        "chunk_ids": [chunk_id]
-    })
+    # Extract module name from doc path (cross-platform)
+    stem = Path(doc_path).stem if doc_path else "unknown"
+    doc_module = normalize_entity(stem)
+    if doc_module and doc_module != "unknown":
+        entities.append({
+            "name": doc_module,
+            "type": "module",
+            "chunk_ids": [chunk_id]
+        })
 
-    # Python imports → depends_on relationships
+    # Python imports: from X import Y
+    for match in PYTHON_IMPORT_FROM_RE.finditer(chunk_text):
+        mod = normalize_entity(match.group(1).strip())
+        if mod and mod != doc_module:
+            entities.append({"name": mod, "type": "module", "chunk_ids": [chunk_id]})
+            relationships.append({
+                "source": doc_module,
+                "target": mod,
+                "type": "imports",
+                "chunk_ids": [chunk_id]
+            })
+        for item in match.group(2).split(","):
+            item_norm = normalize_entity(item.strip())
+            if item_norm and item_norm != "*" and item_norm != doc_module:
+                entities.append({"name": item_norm, "type": "module", "chunk_ids": [chunk_id]})
+                relationships.append({
+                    "source": doc_module,
+                    "target": item_norm,
+                    "type": "imports",
+                    "chunk_ids": [chunk_id]
+                })
+
+    # Python imports: import X, Y
     for match in PYTHON_IMPORT_RE.finditer(chunk_text):
-        imported = (match.group(1) or match.group(2) or "").strip()
-        if imported:
-            for imp in imported.split(","):
-                imp = normalize_entity(imp.strip())
-                if imp and imp != doc_module:
-                    entities.append({"name": imp, "type": "module", "chunk_ids": [chunk_id]})
-                    relationships.append({
-                        "source": doc_module,
-                        "target": imp,
-                        "type": "imports",
-                        "chunk_ids": [chunk_id]
-                    })
+        for imp in match.group(1).split(","):
+            imp_norm = normalize_entity(imp.strip())
+            if imp_norm and imp_norm != doc_module:
+                entities.append({"name": imp_norm, "type": "module", "chunk_ids": [chunk_id]})
+                relationships.append({
+                    "source": doc_module,
+                    "target": imp_norm,
+                    "type": "imports",
+                    "chunk_ids": [chunk_id]
+                })
 
     # Class definitions
     for match in MODULE_DEF_RE.finditer(chunk_text):

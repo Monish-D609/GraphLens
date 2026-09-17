@@ -154,12 +154,12 @@ async def ingest(background_tasks: BackgroundTasks):
     return IngestResponse(status="started", message="Ingestion started in background")
 
 
-async def _run_ingestion_background():
+def _run_ingestion_background():
     try:
         from ..ingestion.pipeline import run_ingestion
         result = run_ingestion()
-        # Reload graph after ingestion
-        if app_state.graph_store.exists():
+        # Reload graph and vector store after ingestion
+        if app_state.graph_store and app_state.graph_store.exists():
             app_state.graph = app_state.graph_store.load()
         app_state.ingestion_status = "done"
         logger.info(f"Ingestion complete: {result}")

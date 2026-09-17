@@ -48,7 +48,7 @@ def _split_document(
     chunk_overlap: int,
     separator: str
 ) -> list[Chunk]:
-    text = doc.content
+    text = doc.content.replace("\r\n", "\n").replace("\r", "\n")
     chunks: list[Chunk] = []
 
     # Split on separator first, then merge small paragraphs
@@ -102,8 +102,10 @@ def _make_chunk(doc: Document, text: str, position: int, start: int, end: int) -
         end_char=end,
         metadata={
             **doc.metadata,
+            "chunk_id": chunk_id,
             "relative_path": doc.relative_path,
             "file_path": doc.file_path,
             "position": position,
         }
     )
+

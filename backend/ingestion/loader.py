@@ -73,11 +73,13 @@ def load_corpus(corpus_dir: str, supported_extensions: list[str] = None) -> list
 
 
 def _read_file(file_path: Path) -> str:
-    """Attempt UTF-8 first, fall back to chardet detection."""
+    """Attempt UTF-8 first, fall back to chardet detection, with normalized line endings."""
     raw = file_path.read_bytes()
     try:
-        return raw.decode("utf-8")
+        content = raw.decode("utf-8")
     except UnicodeDecodeError:
         detected = chardet.detect(raw)
         encoding = detected.get("encoding") or "latin-1"
-        return raw.decode(encoding, errors="replace")
+        content = raw.decode(encoding, errors="replace")
+    return content.replace("\r\n", "\n").replace("\r", "\n")
+

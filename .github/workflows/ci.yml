@@ -31,11 +31,11 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Upload dist artifact
+      - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: frontend-dist
-          path: frontend/dist/
+          name: frontend-build
+          path: frontend/.next/
 
   # ── Backend lint & import check ───────────────────────────────────────────
   backend:
@@ -72,6 +72,13 @@ jobs:
           from backend.retrieval.hybrid import merge_results
           print('All backend imports OK')
         "
+        env:
+          OPENROUTER_API_KEY: dummy
+          CLOUDFLARE_ACCOUNT_ID: dummy
+          CLOUDFLARE_API_TOKEN: dummy
+
+      - name: Run tests
+        run: pytest -v
         env:
           OPENROUTER_API_KEY: dummy
           CLOUDFLARE_ACCOUNT_ID: dummy

@@ -73,13 +73,14 @@ class VectorStore:
         )
 
         hits = []
-        for doc, meta, dist in zip(
+        for chunk_id, doc, meta, dist in zip(
+            results["ids"][0],
             results["documents"][0],
             results["metadatas"][0],
             results["distances"][0]
         ):
             hits.append({
-                "chunk_id": meta.get("chunk_id", ""),
+                "chunk_id": chunk_id or meta.get("chunk_id", ""),
                 "text": doc,
                 "score": 1.0 - dist,   # cosine distance → similarity
                 "source": meta.get("relative_path", ""),
@@ -97,9 +98,9 @@ class VectorStore:
             include=["documents", "metadatas"]
         )
         hits = []
-        for doc, meta in zip(results["documents"], results["metadatas"]):
+        for chunk_id, doc, meta in zip(results["ids"], results["documents"], results["metadatas"]):
             hits.append({
-                "chunk_id": meta.get("chunk_id", ""),
+                "chunk_id": chunk_id or meta.get("chunk_id", ""),
                 "text": doc,
                 "score": 0.0,   # Graph-retrieved, no similarity score
                 "source": meta.get("relative_path", ""),

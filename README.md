@@ -4,7 +4,7 @@
 
 GraphLens is a **retrieval-augmented generation (RAG) system** that combines conventional vector similarity search with a **knowledge graph** built from the same documents. It is designed to answer questions about technical documentation — including questions that involve relationships between components, such as inheritance, dependencies, and function calls — which flat vector search alone often struggles with.
 
-Built on **Django REST Framework documentation** as its knowledge base, GraphLens ingests, embeds, graphs, and queries a 36-document corpus through a **FastAPI backend** and a **React + Next.js web interface**.
+Built on **Django REST Framework documentation** as its knowledge base, GraphLens ingests, embeds, graphs, and queries a 36-to-69 document corpus through a **FastAPI backend** and a **React + Next.js web interface**.
 
 ---
 
@@ -44,7 +44,7 @@ The result is a retrieval system that can surface contextually relevant chunks t
 
 ## ✨ Key Features
 
-- **Multi-document knowledge base** — 36 Django REST Framework documentation pages (`.md`)
+- **Multi-document knowledge base** — 36 core Django REST Framework documentation guides (up to 69 with full submodules) (`.md`)
 - **Semantic vector retrieval** — ChromaDB with embeddings from Cloudflare BGE or `all-MiniLM-L6-v2`
 - **Knowledge graph construction** — Rule-based + LLM-assisted entity/relationship extraction into a NetworkX directed graph
 - **Graph traversal retrieval** — BFS traversal across `imports`, `depends_on`, `calls`, `inherits_from`, `defines` edges
@@ -242,7 +242,7 @@ OPENROUTER_API_KEY=your_openrouter_key
 
 ```bash
 python scripts/download_corpus.py
-# Downloads 36 DRF documentation pages into ./corpus/drf/
+# Downloads DRF documentation pages into ./corpus/drf/
 ```
 
 ### 4. Start the backend
@@ -266,6 +266,12 @@ npm run dev
 1. Open `http://localhost:3000`
 2. Trigger ingestion — `POST /api/ingest` (runs in the background; poll `/api/ingest/status` for progress)
 3. Once ingestion is complete, ask a question in the playground
+
+### 7. Run automated tests
+
+```bash
+pytest -v
+```
 
 ---
 
