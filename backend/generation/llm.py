@@ -57,9 +57,13 @@ class CloudflareLLMClient:
     def __init__(self, config: dict):
         self.account_id = (
             config.get("cloudflare_account_id")
-            or os.getenv("CLOUDFLARE_ACCOUNT_ID", "")
+            or os.getenv("CLOUDFLARE_ACCOUNT_ID")
+            or os.getenv("CF_ACCOUNT_ID", "")
         )
-        self.api_token = os.getenv("CLOUDFLARE_API_TOKEN", "")
+        self.api_token = (
+            os.getenv("CLOUDFLARE_API_TOKEN")
+            or os.getenv("CF_API_TOKEN", "")
+        )
         self.model = config.get("cloudflare_model", self.MODELS[0])
         self.max_tokens = config.get("max_tokens", 1024)
         self.temperature = config.get("temperature", 0.1)
@@ -95,12 +99,19 @@ class CloudflareLLMClient:
         resp.raise_for_status()
         data = resp.json()
 
-        # CF response shape: { "result": { "response": "..." }, "success": true }
-        if not data.get("success"):
-            errors = data.get("errors", [])
-            raise RuntimeError(f"Cloudflare AI error: {errors}")
-
-        return data["result"]["response"]
+        # CF response shape can be { "result": { "response": "..." } } or { "result": { "choices": [{ "message": { "content": "..." } }] } }
+        res = data.get("result", {})
+        if isinstance(res, dict):
+            if "response" in res:
+                return res["response"]
+            choices = res.get("choices")
+            if choices and len(choices) > 0:
+                msg = choices[0].get("message", {})
+                if "content" in msg:
+                    return msg["content"]
+        if isinstance(res, str):
+            return res
+        return str(res)
 
     async def chat_json(self, prompt: str) -> str:
         """Best-effort JSON extraction — CF doesn't have a native JSON mode."""

@@ -9,9 +9,14 @@ from contextlib import asynccontextmanager
 from typing import Optional
 
 import yaml
+from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+
+# Load environment variables from .env in project root
+dotenv_path = Path(__file__).parent.parent.parent / ".env"
+load_dotenv(dotenv_path=dotenv_path)
 
 # Setup logging
 logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"))

@@ -34,8 +34,8 @@ def get_embedder(embedding_config: dict) -> "Embedder":
     Returns a Cloudflare embedder if credentials are present,
     otherwise falls back to the local sentence-transformers model.
     """
-    cf_account = os.getenv("CLOUDFLARE_ACCOUNT_ID", "")
-    cf_token   = os.getenv("CLOUDFLARE_API_TOKEN", "")
+    cf_account = os.getenv("CLOUDFLARE_ACCOUNT_ID") or os.getenv("CF_ACCOUNT_ID", "")
+    cf_token   = os.getenv("CLOUDFLARE_API_TOKEN") or os.getenv("CF_API_TOKEN", "")
 
     if cf_account and cf_token:
         logger.info("Embedding provider: Cloudflare Workers AI (primary)")
