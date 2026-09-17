@@ -2,6 +2,10 @@
 
 ### A Graph-Augmented AI Knowledge Assistant for Technical Documentation
 
+[![YouTube Demo Video](https://img.shields.io/badge/YouTube-Watch_Demo-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/e4Ul_YlSQMw)
+[![FastAPI Backend](https://img.shields.io/badge/Backend-FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](http://localhost:8000/docs)
+[![Next.js Frontend](https://img.shields.io/badge/Frontend-Next.js_16-black?style=for-the-badge&logo=next.js&logoColor=white)](http://localhost:3000)
+
 GraphLens is a **retrieval-augmented generation (RAG) system** that combines conventional vector similarity search with a **knowledge graph** built from the same documents. It is designed to answer questions about technical documentation — including questions that involve relationships between components, such as inheritance, dependencies, and function calls — which flat vector search alone often struggles with.
 
 Built on **Django REST Framework documentation** as its knowledge base, GraphLens ingests, embeds, graphs, and queries a 36-to-69 document corpus through a **FastAPI backend** and a **React + Next.js web interface**.
@@ -60,9 +64,17 @@ The result is a retrieval system that can surface contextually relevant chunks t
 
 ---
 
-## 🖥️ Demo
+## 🎬 Video Demonstration
+ 
+> 📺 **Watch the Walkthrough Demo on YouTube:** **[https://youtu.be/e4Ul_YlSQMw](https://youtu.be/e4Ul_YlSQMw)**
+ 
+The video walkthrough demonstrates:
+- **Side-by-side RAG Comparison**: Live `vanilla` vs. `graph` retrieval modes in the interactive playground.
+- **Knowledge Graph Traversal Trace**: Real-time multi-hop visualization of nodes and edges retrieved from the NetworkX store.
+- **Strictly Grounded Answers**: Inline `[Source: filename.md]` citations generated from actual documentation chunks.
+- **Backend Telemetry**: Real-time index health status and Swagger API documentation.
 
-The application is not deployed to a public URL. To see it in action, run it locally following the [Quick Start](#-quick-start) instructions below.
+To run it locally or deploy it, follow the [Quick Start](#-quick-start) instructions below.
 
 **Example queries to test with:**
 
